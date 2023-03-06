@@ -2,7 +2,7 @@
     BoxLayout:
 
         orientation: 'vertical'
-        spacing: 20
+        spacing: 100
         padding: 20, 20
         canvas:
             Color:
@@ -12,12 +12,13 @@
                 size: self.size
         BoxLayout:
             orientation: 'vertical'
-            spacing:0
+            padding:50,200
             Image:
                 source: 'logo.png'
                 height:300
 
             Label:
+
                 text: 'KOKOS'
                 font_size: '60sp'
                 font_name: 'Roboto-Bold.ttf'
@@ -25,86 +26,85 @@
                 height: 100
                 color: 1, 1, 1, 1
         BoxLayout:
-            padding:20,20
+            padding:100,100
             orientation: 'vertical'
             size_hint_y: None
-            height: 300
+            height: 200
             Label:
+                pos: (200,0)
                 text: 'Username'
                 color: 0.9, 0.9, 0.9, 1
                 font_size: '18sp'
                 font_name: 'Roboto-Bold.ttf'
                 size_hint_y: None
                 size_hint_x: None
-                height: 50
+                height: 100
             TextInput:
                 id: username_input
                 hint_text: 'Username'
+                font_size: "18sp"
+                padding:40, 40
+                hint_text_color:0, 0, 0, 1
                 size_hint_y: None
-                height: 50
-                background_color: (0.4, 0.6, 1, 1)
+                height: 150
+                background_color: (0.4, 0.6, 1, 0.1)
                 background_normal: ''
                 background_active: ''
                 border: (1, 1, 1, 1)
-                border_radius: [20,]
+
                 canvas.before:
                     Color:
-                        rgba: (1, 1, 1, 0.9)
+                        rgba: (1, 1, 1, 1)
                     RoundedRectangle:
                         pos: self.pos
                         size: self.size
-                        radius: [20,]
-                canvas.after:
-
+                        radius: [40,]
                     Color:
-                        rgba: (1, 1, 1, 0.9)
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [20,]
+                        rgba: (0.5, 0.5, 0.5, 1)
+
+
         BoxLayout:
             orientation: 'vertical'
             size_hint_y: None
-            height: 100
-            padding:20,20
+            height: 200
+            padding:100,100
             Label:
                 text: 'Password'
+                pos: (200,0)
                 color: 0.9, 0.9, 0.9, 1
                 font_size: '18sp'
                 font_name: 'Roboto-Bold.ttf'
                 size_hint_y: None
                 size_hint_x: None
-                height: 50
+                height: 100
             TextInput:
                 id: password_input
                 hint_text: 'Password'
+                font_size: "18sp"
+                padding: 40,40
                 password: True
                 size_hint_y: None
-                height: 50
+                height: 150
                 background_color: (0.4, 0.6, 1, 1)
                 background_normal: ''
                 background_active: ''
                 border: (1, 1, 1, 1)
-                border_radius: [20,]
+                border_radius: [40,]
                 canvas.before:
                     Color:
-                        rgba: (1, 1, 1, 0.9)
+                        rgba: (1, 1, 1, 1)
                     RoundedRectangle:
                         pos: self.pos
                         size: self.size
-                        radius: [20,]
-                canvas.after:
-
+                        radius: [40,]
                     Color:
-                        rgba: (1, 1, 1, 0.9)
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [20,]
+                        rgba: (0.5, 0.5, 0.5, 1)
+
         BoxLayout:
             orientation: 'vertical'
             size_hint_y: 0.7
             padding:10,10
+
             Widget:
             Button:
                 text: 'Login'

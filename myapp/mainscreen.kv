@@ -3,9 +3,27 @@
         orientation: 'vertical'
         padding: 60, 60
         spacing: 20
+        canvas.before:
+            Color:
+                rgba: 0.4, 0.6, 1, 0.1  # ustawienie koloru tła
+            Rectangle:
+                pos: self.pos
+                size: self.size
         Label:
-            text: 'Welcome to the main screen!'
-            font_size: '30sp'
+
+            font_size: '20sp'
         Button:
-            text: 'Logout'
-            on_press: root.logout()
+            text: 'Enter user code'
+            size_hint_y: None
+            height: '48dp'
+            on_press: print('Enter user code')
+        Button:
+            text: 'Enter registration number'
+            size_hint_y: None
+            height: '48dp'
+            on_press: print('Enter registration number')
+        Button:
+            text: 'My previous chats'
+            size_hint_y: None
+            height: '48dp'
+            on_press: print('My previous chats')
