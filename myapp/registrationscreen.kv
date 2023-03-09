@@ -1,0 +1,67 @@
+<RegistrationScreen>
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 60,0
+        canvas:
+            Color:
+                rgba: 0.4, 0.6, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        BoxLayout:
+            orientation: 'vertical'
+            Image:
+                source: 'logo.png'
+                width: '50dp'
+                height: '50dp'
+        Widget:
+            size_hint_y: None
+            height: '10dp'
+        Label:
+            text: 'Enter registration '
+            font_name: 'Roboto-Bold.ttf'
+            font_size: '32sp'
+
+        Widget:
+            size_hint_y: None
+            height: '8dp'
+        TextInput:
+            id: code_input
+            size_hint_y: 0.5
+
+            height: '30dp'
+            background_color: (0.4, 0.6, 1, 1)
+            background_normal: ''
+            background_active: ''
+            border: (1, 1, 1, 1)
+            border_radius: [40,]
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 1)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [40,]
+                Color:
+                    rgba: (0.5, 0.5, 0.5, 1)
+        Widget:
+            size_hint_y: None
+            height: '100dp'
+        Button:
+            text: 'Find user'
+            size_hint_y: None
+
+            on_press: root.verify_code(self)
+            font_name: 'Roboto-Bold.ttf'
+            size_hint_y: None
+            height: 300
+            font_size: '22sp'
+            size_hint_x: None
+            width: 800
+            background_color: 0.1, 0.3, 0.6, 1
+            color: 1, 1, 1, 1
+            on_press: root.login(self)
+            pos_hint: {'center_x': 0.5}
+        Widget:
+            size_hint_y: None
+            height: '100dp'
