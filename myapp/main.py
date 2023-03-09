@@ -2,12 +2,12 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
-
 Builder.load_file('loginscreen.kv')
 Builder.load_file('mainscreen.kv')
 Builder.load_file('usercodescreen.kv')
 Builder.load_file('registrationscreen.kv')
 
+Window.size = (1080, 2120)
 class LoginScreen(Screen):
     def login(self, instance):
 
@@ -56,10 +56,11 @@ class MyApp(App):
         Window.bind(on_keyboard=self.on_key)
         # Create the screen manager and add the login and main screens to it
         screen_manager = ScreenManager()
+        screen_manager.add_widget(MainScreen(name='main'))
         screen_manager.add_widget(LoginScreen(name='login'))
         screen_manager.add_widget(RegistrationScreen(name='registration'))
 
-        screen_manager.add_widget(MainScreen(name='main'))
+
 
         screen_manager.add_widget(UserCodeScreen(name='user_code'))
 
@@ -83,6 +84,7 @@ class MyApp(App):
 
 
 if __name__ == '__main__':
+
     MyApp().run()
 
 

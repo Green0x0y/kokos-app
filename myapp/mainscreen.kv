@@ -10,8 +10,7 @@
                 size: self.size
         BoxLayout:
             orientation: 'vertical'
-            size_hint_y: 1
-            height: '30dp'
+            size_hint_y: 0.25
             spacing: 10
             canvas:
                 Color:
@@ -23,7 +22,7 @@
             Label:
                 text: "KOKOS"
                 color: 0.4, 0.6, 1, 1
-                font_size: '60sp'
+                font_size: '80dp'
                 font_name: 'Roboto-Bold.ttf'
             Label:
                 text: "username"
@@ -31,18 +30,15 @@
                 font_size: '26sp'
 
         Widget:
-            size_hint_y: None
-            height: '20dp'
+            size_hint_y: 0.07
         Button:
             padding: 100,100
             spacing:100
             text: 'Enter user code'
-            size_hint_y: None
+            size_hint_y: 0.15
 
             on_press: root.switch_to_user_code_screen(self)
             font_name: 'Roboto-Bold.ttf'
-            size_hint_y: None
-            height: 300
             font_size: '23sp'
             size_hint_x: None
             width: 800
@@ -50,16 +46,15 @@
             color: 1, 1, 1, 1
             pos_hint: {'center_x': 0.5}
         Widget:
-            size_hint_y: None
-            height: '20dp'
+            size_hint_y: 0.07
         Button:
             text: 'Enter registration number'
-            size_hint_y: None
+
             on_press: root.switch_to_registration_screen(self)
 
             font_name: 'Roboto-Bold.ttf'
-            size_hint_y: None
-            height: 300
+            size_hint_y: 0.15
+
             font_size: '23sp'
             size_hint_x: None
             width: 800
@@ -67,16 +62,13 @@
             color: 1, 1, 1, 1
             pos_hint: {'center_x': 0.5}
         Widget:
-            size_hint_y: None
-            height: '20dp'
+            size_hint_y: 0.07
         Button:
             text: 'My previous chats'
-            size_hint_y: None
 
             on_press: print('My previous chats')
             font_name: 'Roboto-Bold.ttf'
-            size_hint_y: None
-            height: 300
+            size_hint_y: 0.15
             font_size: '23sp'
             size_hint_x: None
             width: 800
@@ -84,5 +76,4 @@
             color: 1, 1, 1, 1
             pos_hint: {'center_x': 0.5}
         Widget:
-            size_hint_y: None
-            height: '20dp'
+            size_hint_y: 0.07
