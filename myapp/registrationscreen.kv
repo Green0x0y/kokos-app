@@ -8,26 +8,23 @@
             Rectangle:
                 pos: self.pos
                 size: self.size
-        BoxLayout:
-            orientation: 'vertical'
-            Image:
-                source: 'logo.png'
-                width: '50dp'
-                height: '50dp'
+
+        Image:
+            source: 'logo.png'
+            size_hint_y: 0.25
         Widget:
-            size_hint_y: None
-            height: '10dp'
+            size_hint_y: 0.05
         Label:
+            size_hint_y: 0.1
             text: 'Enter registration '
             font_name: 'Roboto-Bold.ttf'
             font_size: '32sp'
 
         Widget:
-            size_hint_y: None
-            height: '8dp'
+            size_hint_y: 0.1
         TextInput:
             id: code_input
-            size_hint_y: 0.5
+            size_hint_y: 0.2
 
             height: '30dp'
             background_color: (0.4, 0.6, 1, 1)
@@ -45,16 +42,14 @@
                 Color:
                     rgba: (0.5, 0.5, 0.5, 1)
         Widget:
-            size_hint_y: None
-            height: '100dp'
+            size_hint_y: 0.15
         Button:
             text: 'Find user'
-            size_hint_y: None
 
             on_press: root.verify_code(self)
             font_name: 'Roboto-Bold.ttf'
-            size_hint_y: None
-            height: 300
+            size_hint_y: 0.2
+
             font_size: '22sp'
             size_hint_x: None
             width: 800
@@ -63,5 +58,4 @@
             on_press: root.login(self)
             pos_hint: {'center_x': 0.5}
         Widget:
-            size_hint_y: None
-            height: '100dp'
+            size_hint_y: 0.15
