@@ -59,11 +59,12 @@ class MyApp(App):
         Window.bind(on_keyboard=self.on_key)
         # Create the screen manager and add the login and main screens to it
         screen_manager = ScreenManager()
+        screen_manager.add_widget(MainScreen(name='main'))
         screen_manager.add_widget(LoginScreen(name='login'))
         screen_manager.add_widget(RegistrationScreen(name='registration'))
         screen_manager.add_widget(UserCodeScreen(name='user_code'))
 
-        screen_manager.add_widget(MainScreen(name='main'))
+
 
         screen_manager.add_widget(SignUpScreen(name='signup'))
 
