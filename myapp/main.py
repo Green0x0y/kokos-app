@@ -6,6 +6,7 @@ Builder.load_file('loginscreen.kv')
 Builder.load_file('mainscreen.kv')
 Builder.load_file('usercodescreen.kv')
 Builder.load_file('registrationscreen.kv')
+Builder.load_file('signupscreen.kv')
 
 Window.size = (1080, 2120)
 class LoginScreen(Screen):
@@ -17,7 +18,8 @@ class LoginScreen(Screen):
             self.manager.current = 'main'
             self.ids.username_input.text = ''
             self.ids.password_input.text = ''
-
+    def move_to_signup(self, instance):
+        self.manager.current = 'signup'
 
 
 
@@ -48,7 +50,8 @@ class RegistrationScreen(Screen):
         code = self.ids.code_input.text
         if len(code) != 8:
             print("Code must be 8 characters long")
-
+class SignUpScreen(Screen):
+    pass
 class MyApp(App):
     username =''
     def build(self):
@@ -56,13 +59,13 @@ class MyApp(App):
         Window.bind(on_keyboard=self.on_key)
         # Create the screen manager and add the login and main screens to it
         screen_manager = ScreenManager()
-        screen_manager.add_widget(MainScreen(name='main'))
         screen_manager.add_widget(LoginScreen(name='login'))
         screen_manager.add_widget(RegistrationScreen(name='registration'))
-
-
-
         screen_manager.add_widget(UserCodeScreen(name='user_code'))
+
+        screen_manager.add_widget(MainScreen(name='main'))
+
+        screen_manager.add_widget(SignUpScreen(name='signup'))
 
 
 

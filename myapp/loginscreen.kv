@@ -1,8 +1,6 @@
 <LoginScreen>:
     BoxLayout:
         orientation: 'vertical'
-        spacing: 50
-        padding: 20, 20
         canvas:
             Color:
                 rgba: 0.4, 0.6, 1, 1
@@ -11,7 +9,7 @@
                 size: self.size
         BoxLayout:
             orientation: 'vertical'
-
+            size_hint_y: 0.3
             Image:
                 source: 'logo.png'
                 height:200
@@ -19,37 +17,32 @@
             Label:
 
                 text: 'KOKOS'
-                font_size: '60sp'
+                font_size: '140'
                 font_name: 'Roboto-Bold.ttf'
-                size_hint_y: None
-                height: 100
                 color: 1, 1, 1, 1
-        Widget:
-            size_hint_y: None
-            height: '12dp'
+
         BoxLayout:
-            padding:100,100
+            padding:100,30
             orientation: 'vertical'
-            size_hint_y: None
-            height: 200
+            size_hint_y: 0.08
             Label:
                 padding:40, 40
                 pos: (200,0)
                 text: 'Username'
                 color: 0.9, 0.9, 0.9, 1
-                font_size: '18sp'
+                font_size: '25'
                 font_name: 'Roboto-Bold.ttf'
                 size_hint_y: None
                 size_hint_x: None
-                height: 100
+
             TextInput:
                 id: username_input
                 hint_text: 'Username'
-                font_size: "18sp"
-                padding:40, 40
+                font_size: "25"
+                padding:32, 32
                 hint_text_color:0, 0, 0, 1
                 size_hint_y: None
-                height: 150
+
                 background_color: (0.4, 0.6, 1, 0.1)
                 background_normal: ''
                 background_active: ''
@@ -68,26 +61,24 @@
 
         BoxLayout:
             orientation: 'vertical'
-            size_hint_y: None
-            height: 200
-            padding:100,100
+            size_hint_y: 0.08
+            padding:100,0
             Label:
                 text: 'Password'
                 pos: (200,0)
                 color: 0.9, 0.9, 0.9, 1
-                font_size: '18sp'
+                font_size: "25"
                 font_name: 'Roboto-Bold.ttf'
                 size_hint_y: None
                 size_hint_x: None
-                height: 100
+
             TextInput:
                 id: password_input
                 hint_text: 'Password'
-                font_size: "18sp"
-                padding: 40,40
+                font_size: "25"
+                padding:32, 32
                 password: True
                 size_hint_y: None
-                height: 150
                 background_color: (0.4, 0.6, 1, 1)
                 background_normal: ''
                 background_active: ''
@@ -105,15 +96,15 @@
 
         BoxLayout:
             orientation: 'vertical'
-            size_hint_y: 0.7
-            padding:10,10
-            Widget:
+            size_hint_y: 0.1
+
+
             Button:
-                text: 'Login'
+                text: 'Log in'
                 font_name: 'Roboto-Bold.ttf'
                 size_hint_y: None
-                height: 150
-                font_size: '18sp'
+
+                font_size: '25'
                 size_hint_x: None
                 width: 500
                 background_color: 0.1, 0.3, 0.6, 1
@@ -122,4 +113,23 @@
                 pos_hint: {'center_x': 0.5}
 
 
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: 0.05
 
+
+            Button:
+                text: 'Sign up'
+                font_name: 'Roboto-Bold.ttf'
+                size_hint_y: None
+
+                font_size: '25'
+                size_hint_x: None
+                width: 500
+                background_color: 0.1, 0.3, 0.6, 1
+                color: 1, 1, 1, 1
+                on_press: root.move_to_signup(self)
+                pos_hint: {'center_x': 0.5}
+
+        Widget:
+            size_hint_y: 0.1
