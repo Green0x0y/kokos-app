@@ -1,135 +1,118 @@
 <LoginScreen>:
-    BoxLayout:
-        orientation: 'vertical'
-        canvas:
-            Color:
-                rgba: 0.4, 0.6, 1, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
-        BoxLayout:
-            orientation: 'vertical'
-            size_hint_y: 0.3
-            Image:
-                source: 'logo.png'
-                height:200
+    canvas.before:
+        Color:
+            rgba: (0.4, 0.6, 1, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    GridLayout:
 
-            Label:
+        cols: 1
+        rows:8
+        #row_force_default:  True
+        #row_default_height: (self.height - self.spacing[1]*(self.rows-1))/self.rows
 
-                text: 'KOKOS'
-                font_size: '140'
-                font_name: 'Roboto-Bold.ttf'
-                color: 1, 1, 1, 1
+        padding: [100, 30]
+        spacing: 20
 
-        BoxLayout:
-            padding:100,30
-            orientation: 'vertical'
-            size_hint_y: 0.08
-            Label:
-                padding:40, 40
-                pos: (200,0)
-                text: 'Username'
-                color: 0.9, 0.9, 0.9, 1
-                font_size: '25'
-                font_name: 'Roboto-Bold.ttf'
-                size_hint_y: None
-                size_hint_x: None
+        Image:
+            source: 'logo.png'
+            size_hint_y: 2
 
-            TextInput:
-                id: username_input
-                hint_text: 'Username'
-                font_size: "25"
-                padding:32, 32
-                hint_text_color:0, 0, 0, 1
-                size_hint_y: None
+        Label:
 
-                background_color: (0.4, 0.6, 1, 0.1)
-                background_normal: ''
-                background_active: ''
-                border: (1, 1, 1, 1)
-
-                canvas.before:
-                    Color:
-                        rgba: (1, 1, 1, 1)
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [40,]
-                    Color:
-                        rgba: (0.5, 0.5, 0.5, 1)
+            text: 'KOKOS'
+            font_size: self.height
+            font_name: 'Roboto-Bold.ttf'
+            color: 1, 1, 1, 1
 
 
-        BoxLayout:
-            orientation: 'vertical'
-            size_hint_y: 0.08
-            padding:100,0
-            Label:
-                text: 'Password'
-                pos: (200,0)
-                color: 0.9, 0.9, 0.9, 1
-                font_size: "25"
-                font_name: 'Roboto-Bold.ttf'
-                size_hint_y: None
-                size_hint_x: None
+        Label:
 
-            TextInput:
-                id: password_input
-                hint_text: 'Password'
-                font_size: "25"
-                padding:32, 32
-                password: True
-                size_hint_y: None
-                background_color: (0.4, 0.6, 1, 1)
-                background_normal: ''
-                background_active: ''
-                border: (1, 1, 1, 1)
-                border_radius: [40,]
-                canvas.before:
-                    Color:
-                        rgba: (1, 1, 1, 1)
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [40,]
-                    Color:
-                        rgba: (0.5, 0.5, 0.5, 1)
+            pos: (200,0)
+            text: 'Username'
+            color: 0.9, 0.9, 0.9, 1
+            font_size: self.height/3
+            font_name: 'Roboto-Bold.ttf'
 
-        BoxLayout:
-            orientation: 'vertical'
-            size_hint_y: 0.1
+            size_hint_x: None
+
+        TextInput:
+
+            id: username_input
+            hint_text: 'Username'
+            font_size: self.height/3
+            hint_text_color:0, 0, 0, 1
+            background_color: (0.4, 0.6, 1, 0.1)
+            background_normal: ''
+            background_active: ''
+            border: (1, 1, 1, 1)
+            padding:32, 32
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 1)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [40,]
+                Color:
+                    rgba: (0.5, 0.5, 0.5, 1)
 
 
-            Button:
-                text: 'Log in'
-                font_name: 'Roboto-Bold.ttf'
-                size_hint_y: None
-
-                font_size: '25'
-                size_hint_x: None
-                width: 500
-                background_color: 0.1, 0.3, 0.6, 1
-                color: 1, 1, 1, 1
-                on_press: root.login(self)
-                pos_hint: {'center_x': 0.5}
 
 
-        BoxLayout:
-            orientation: 'vertical'
-            size_hint_y: 0.05
+        Label:
+            text: 'Password'
+            pos: (200,0)
+            color: 0.9, 0.9, 0.9, 1
+            font_size: self.height/3
+            font_name: 'Roboto-Bold.ttf'
+
+            size_hint_x: None
+
+        TextInput:
+            id: password_input
+            hint_text: 'Password'
+            font_size: self.height/3
+            padding:32, 32
+            password: True
+
+            background_color: (0.4, 0.6, 1, 1)
+            background_normal: ''
+            background_active: ''
+            border: (1, 1, 1, 1)
+            border_radius: [40,]
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 1)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [40,]
+                Color:
+                    rgba: (0.5, 0.5, 0.5, 1)
 
 
-            Button:
-                text: 'Sign up'
-                font_name: 'Roboto-Bold.ttf'
-                size_hint_y: None
+        Button:
 
-                font_size: '25'
-                size_hint_x: None
-                width: 500
-                background_color: 0.1, 0.3, 0.6, 1
-                color: 1, 1, 1, 1
-                on_press: root.move_to_signup(self)
-                pos_hint: {'center_x': 0.5}
+            text: 'Log in'
+            font_name: 'Roboto-Bold.ttf'
+            font_size: self.height/3
+            width: 500
+            background_color: 0.1, 0.3, 0.6, 1
+            color: 1, 1, 1, 1
+            on_press: root.login(self)
+            pos_hint: {'center_x': 0.5}
 
-        Widget:
-            size_hint_y: 0.1
+
+
+        Button:
+
+            text: 'Sign up'
+            font_name: 'Roboto-Bold.ttf'
+            font_size: self.height/3
+            width: 500
+            background_color: 0.1, 0.3, 0.6, 1
+            color: 1, 1, 1, 1
+            on_press: root.move_to_signup(self)
+            pos_hint: {'center_x': 0.5}
