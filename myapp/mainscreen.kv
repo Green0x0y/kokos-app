@@ -1,29 +1,93 @@
 <MainScreen>:
     BoxLayout:
         orientation: 'vertical'
-        padding: 60, 60
-        spacing: 20
-        canvas.before:
+
+        canvas:
             Color:
-                rgba: 0.4, 0.6, 1, 0.1  # ustawienie koloru tła
+                rgba: 0.4, 0.6, 1, 1
             Rectangle:
                 pos: self.pos
                 size: self.size
-        Label:
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: 0.25
+            spacing: 10
+            canvas:
+                Color:
+                    rgba: 1, 1, 1, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [0, 0, 100, 100]
+            Label:
+                text: "KOKOS"
+                color: 0.4, 0.6, 1, 1
+                font_size: '120'
+                font_name: 'Roboto-Bold.ttf'
+            Label:
+                text: "username"
+                color: 0.4, 0.6, 1, 1
+                font_size: '50'
 
-            font_size: '20sp'
+        Widget:
+            size_hint_y: 0.05
         Button:
+            padding: 100,100
+            spacing:100
             text: 'Enter user code'
-            size_hint_y: None
-            height: '48dp'
-            on_press: root.switch_to_user_code_screen(self)
+            size_hint_y: 0.1
+
+            #on_press: root.switch_to_user_code_screen(self)
+            font_name: 'Roboto-Bold.ttf'
+            font_size: '40'
+            size_hint_x: None
+            width: 750
+            background_color: 0.1, 0.3, 0.6, 1
+            color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5}
+        Widget:
+            size_hint_y: 0.05
         Button:
             text: 'Enter registration number'
-            size_hint_y: None
-            height: '48dp'
-            on_press: print('Enter registration number')
+
+            #on_press: root.switch_to_registration_screen(self)
+
+            font_name: 'Roboto-Bold.ttf'
+            size_hint_y: 0.1
+
+            font_size: '40'
+            size_hint_x: None
+            width: 750
+            background_color: 0.1, 0.3, 0.6, 1
+            color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5}
+        Widget:
+            size_hint_y: 0.05
         Button:
             text: 'My previous chats'
-            size_hint_y: None
-            height: '48dp'
+
             on_press: print('My previous chats')
+            font_name: 'Roboto-Bold.ttf'
+            size_hint_y: 0.1
+            font_size: '40'
+            size_hint_x: None
+            width: 750
+            background_color: 0.1, 0.3, 0.6, 1
+            color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5}
+        Widget:
+            size_hint_y: 0.05
+        Button:
+            text: 'Settings'
+
+            on_press: print('Settings')
+            font_name: 'Roboto-Bold.ttf'
+            size_hint_y: 0.1
+            font_size: '40'
+            size_hint_x: None
+            width: 750
+            background_color: 0.1, 0.3, 0.6, 1
+            color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5}
+        Widget:
+            size_hint_y: 0.05
