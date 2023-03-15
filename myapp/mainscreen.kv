@@ -1,6 +1,8 @@
 <MainScreen>:
-    BoxLayout:
-        orientation: 'vertical'
+    GridLayout:
+        cols: 1
+        rows: 5
+
 
         canvas:
             Color:
@@ -10,8 +12,9 @@
                 size: self.size
         BoxLayout:
             orientation: 'vertical'
-            size_hint_y: 0.25
-            spacing: 10
+            size_hint_y: 2
+
+
             canvas:
                 Color:
                     rgba: 1, 1, 1, 1
@@ -22,72 +25,50 @@
             Label:
                 text: "KOKOS"
                 color: 0.4, 0.6, 1, 1
-                font_size: '120'
+                font_size: self.height/2
                 font_name: 'Roboto-Bold.ttf'
             Label:
-                text: "username"
+                text: "twoja nazwa"
                 color: 0.4, 0.6, 1, 1
-                font_size: '50'
+                font_size: self.height/4
 
-        Widget:
-            size_hint_y: 0.05
-        Button:
-            padding: 100,100
-            spacing:100
-            text: 'Enter user code'
-            size_hint_y: 0.1
 
-            #on_press: root.switch_to_user_code_screen(self)
-            font_name: 'Roboto-Bold.ttf'
-            font_size: '40'
-            size_hint_x: None
-            width: 750
-            background_color: 0.1, 0.3, 0.6, 1
-            color: 1, 1, 1, 1
-            pos_hint: {'center_x': 0.5}
-        Widget:
-            size_hint_y: 0.05
-        Button:
-            text: 'Enter registration number'
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: 3
+            padding: (self.width * 0.1, self.height*0.1, self.width * 0.1, self.height*0.1)
+            spacing: self.height*0.05
+            Button:
+                text: 'Wyszukaj po kodzie'
+                on_press: root.switch_to_user_code_screen(self)
+                font_name: 'Roboto-Bold.ttf'
+                font_size: self.height/5
+                background_color: 0.1, 0.3, 0.6, 1
+                color: 1, 1, 1, 1
 
-            #on_press: root.switch_to_registration_screen(self)
 
-            font_name: 'Roboto-Bold.ttf'
-            size_hint_y: 0.1
+            Button:
+                text: 'Wyszukaj po rejestracji'
+                on_press: root.switch_to_registration_screen(self)
+                font_name: 'Roboto-Bold.ttf'
+                font_size: self.height/5
+                background_color: 0.1, 0.3, 0.6, 1
+                color: 1, 1, 1, 1
 
-            font_size: '40'
-            size_hint_x: None
-            width: 750
-            background_color: 0.1, 0.3, 0.6, 1
-            color: 1, 1, 1, 1
-            pos_hint: {'center_x': 0.5}
-        Widget:
-            size_hint_y: 0.05
-        Button:
-            text: 'My previous chats'
+            Button:
+                text: 'Moje czaty'
+                on_press: print('My previous chats')
+                font_name: 'Roboto-Bold.ttf'
+                font_size: self.height/5
 
-            on_press: print('My previous chats')
-            font_name: 'Roboto-Bold.ttf'
-            size_hint_y: 0.1
-            font_size: '40'
-            size_hint_x: None
-            width: 750
-            background_color: 0.1, 0.3, 0.6, 1
-            color: 1, 1, 1, 1
-            pos_hint: {'center_x': 0.5}
-        Widget:
-            size_hint_y: 0.05
-        Button:
-            text: 'Settings'
+                background_color: 0.1, 0.3, 0.6, 1
+                color: 1, 1, 1, 1
 
-            on_press: print('Settings')
-            font_name: 'Roboto-Bold.ttf'
-            size_hint_y: 0.1
-            font_size: '40'
-            size_hint_x: None
-            width: 750
-            background_color: 0.1, 0.3, 0.6, 1
-            color: 1, 1, 1, 1
-            pos_hint: {'center_x': 0.5}
-        Widget:
-            size_hint_y: 0.05
+            Button:
+                text: 'Ustawienia'
+                on_press: print('Settings')
+                font_name: 'Roboto-Bold.ttf'
+                font_size: self.height/5
+
+                background_color: 0.1, 0.3, 0.6, 1
+                color: 1, 1, 1, 1
