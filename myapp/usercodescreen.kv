@@ -1,49 +1,62 @@
+
 <UserCodeScreen>:
     BoxLayout:
         orientation: 'vertical'
-        padding: 60, 60
-        spacing: 20
+        padding: 60,0
         canvas:
             Color:
                 rgba: 0.4, 0.6, 1, 1
             Rectangle:
                 pos: self.pos
                 size: self.size
+        Image:
+            source: 'logo.png'
+            height:400
+            size_hint_y: 0.3
+        Widget:
+            size_hint_y: 0.03
         Label:
-            text: 'Enter code of user you want to contact'
+            size_hint_y: 0.1
+            text: 'Enter code of user \nyou want to contact'
+
             font_name: 'Roboto-Bold.ttf'
-            font_size: '30sp'
+            font_size: '70'
+
+        Widget:
+            size_hint_y: 0.1
         TextInput:
+            padding:50,50
+            font_size: '60'
             id: code_input
-            size_hint_y: 0.5
-            padding:40, 40
-            height: '48dp'
+            size_hint_y: 0.1
             background_color: (0.4, 0.6, 1, 1)
             background_normal: ''
             background_active: ''
             border: (1, 1, 1, 1)
-            border_radius: [40,]
+            border_radius: [60,]
             canvas.before:
                 Color:
                     rgba: (1, 1, 1, 1)
                 RoundedRectangle:
                     pos: self.pos
                     size: self.size
-                    radius: [40,]
+                    radius: [60,]
                 Color:
                     rgba: (0.5, 0.5, 0.5, 1)
+        Widget:
+            size_hint_y: 0.15
         Button:
             text: 'Find user'
-            size_hint_y: None
-            height: '48dp'
             on_press: root.verify_code(self)
             font_name: 'Roboto-Bold.ttf'
-            size_hint_y: None
-            height: 150
-            font_size: '18sp'
+            size_hint_y: 0.1
+            font_size: '40'
             size_hint_x: None
             width: 500
             background_color: 0.1, 0.3, 0.6, 1
             color: 1, 1, 1, 1
             on_press: root.login(self)
             pos_hint: {'center_x': 0.5}
+        Widget:
+            size_hint_y: 0.25
+
