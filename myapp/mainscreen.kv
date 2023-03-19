@@ -39,8 +39,11 @@
             padding: (self.width * 0.1, self.height*0.1, self.width * 0.1, self.height*0.1)
             spacing: self.height*0.05
             Button:
-                text: 'Wyszukaj po kodzie'
-                on_press: root.switch_to_user_code_screen(self)
+                text: "Skanuj kod"
+                on_press: root.switch_to_qr_screen(self)
+                #text: 'Scan QR Code'
+                font_size: '30sp'
+                id: scan_code_button
                 font_name: 'Roboto-Bold.ttf'
                 font_size: self.height/5
                 background_color: 0.1, 0.3, 0.6, 1

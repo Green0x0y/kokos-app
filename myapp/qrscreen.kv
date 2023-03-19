@@ -1,3 +1,17 @@
+#:import ZBarCam kivy_garden.zbarcam.ZBarCam
 <QRScreen>:
-    BoxLayout:
-        orientation: 'vertical'
+
+    orientation: 'vertical'
+    canvas.after:
+        Color:
+            rgba: 1, 1, 1, 1  # biały kolor
+        Line:
+            rectangle: (self.width/6, self.width/2, self.width*2/3, self.width*2/3)  # pozycja i rozmiar prostokąta
+            width: 2
+    ZBarCam:
+        id: qrcodecam
+        on_symbols: root.show_qr_code(*args)
+    Label:
+        id:qr_code_label
+        size_hint:None, None
+        size: self.texture_size[0], 50
