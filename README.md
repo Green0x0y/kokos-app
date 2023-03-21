@@ -14,6 +14,7 @@ he can scan the QR code and send a message directly to the car owner.
 ## Technologies Used
 - Python
 - Kivy
+
 Note: MongoDB will be added in the future for database management.
 
 ## Collaborators
