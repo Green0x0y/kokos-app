@@ -1,5 +1,5 @@
 # KOKOS
-### Koleżeńka Ochrona Kierowców Oraz Samochodów
+### Koleżeńska Ochrona Kierowców Oraz Samochodów
 
 ## Project Description
 This project is an ongoing mobile application.
