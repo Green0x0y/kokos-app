@@ -2,7 +2,7 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
-
+from  kivy_garden.zbarcam import ZBarCam
 
 Builder.load_file('loginscreen.kv')
 Builder.load_file('mainscreen.kv')
@@ -57,7 +57,9 @@ class RegistrationScreen(Screen):
         if len(code) != 8:
             print("Code must be 8 characters long")
 class SignUpScreen(Screen):
-    pass
+    def switch_to_login_screen(self, instance):
+        # Switch to the user code screen
+        self.manager.current = 'login'
 class QRScreen(Screen):
     def show_qr_code(self, instance, symbol):
         self.ids.qr_code_label.text = f"QR code found"

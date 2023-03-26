@@ -125,12 +125,19 @@
                 text: 'Zarejestruj się'
                 font_name: 'Roboto-Bold.ttf'
                 size_hint_x:0.7
-
                 font_size: self.height/3
-
-
                 background_color: 0.1, 0.3, 0.6, 1
                 color: 1, 1, 1, 1
-
+                pos_hint: {'center_x': 0.5}
+            Button:
+                background_color: 0.4, 0.6, 1, 0
+                text: 'Mam już konto'
+                font_name: 'Roboto-Bold.ttf'
+                font_size: self.height/3
+                size_hint_x: 0.7
+                size_hint_y: 0.8
+                background_color:
+                color: 1, 1, 1, 1
+                on_press: root.switch_to_login_screen(self)
                 pos_hint: {'center_x': 0.5}
 
