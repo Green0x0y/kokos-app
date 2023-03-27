@@ -1,0 +1,119 @@
+{
+    "users":{
+        "1":{
+            "name": "Sebastian",
+            "conversation_to": 
+                {
+                    "Laura": [
+                        {
+                            "message": "message 1",
+                            "datetime": "21-03-2022 16:15" 
+                        },
+                        {
+                            "message": "message 2",
+                            "datetime": "21-03-2022 16:17" 
+                        },
+                        {
+                            "message": "message 10",
+                            "datetime": "21-03-2022 16:20" 
+                        },
+                        {
+                            "message": "message 1",
+                            "datetime": "21-03-2022 16:15" 
+                        },
+                        {
+                            "message": "message 2",
+                            "datetime": "21-03-2022 16:17" 
+                        },
+                        {
+                            "message": "message 10",
+                            "datetime": "21-03-2022 16:20" 
+                        },
+                        {
+                            "message": "message 1",
+                            "datetime": "21-03-2022 16:15" 
+                        },
+                        {
+                            "message": "message 2",
+                            "datetime": "21-03-2022 16:17" 
+                        },
+                        {
+                            "message": "message 10",
+                            "datetime": "21-03-2022 16:20" 
+                        },
+                        {
+                            "message": "message 1",
+                            "datetime": "21-03-2022 16:15" 
+                        },
+                        {
+                            "message": "message 2",
+                            "datetime": "21-03-2022 16:17" 
+                        },
+                        {
+                            "message": "message 10",
+                            "datetime": "21-03-2022 16:20" 
+                        },{
+                            "message": "message 1",
+                            "datetime": "21-03-2022 16:15" 
+                        },
+                        {
+                            "message": "message 2",
+                            "datetime": "21-03-2022 16:17" 
+                        },
+                        {
+                            "message": "message 10",
+                            "datetime": "21-03-2022 16:20" 
+                        }
+                    ],
+                    "Sebastian": [
+                        {
+                            "message": "message 1",
+                            "datetime": "21-03-2022 16:15" 
+                        },
+                        {
+                            "message": "message 2",
+                            "datetime": "21-03-2022 16:17" 
+                        },
+                        {
+                            "message": "message 3",
+                            "datetime": "21-03-2022 16:20" 
+                        }
+                    ]
+                }
+        },
+        "2":{
+            "name": "Laura",
+            "conversation_to": 
+                {
+                    "1": [
+                        {
+                            "message": "message 1",
+                            "datetime": "21-03-2022 16:16" 
+                        },
+                        {
+                            "message": "message 2",
+                            "datetime": "21-03-2022 16:18" 
+                        },
+                        {
+                            "message": "message 3",
+                            "datetime": "21-03-2022 16:21" 
+                        }
+                    ],
+                    "2": [
+                        {
+                            "message": "message 1",
+                            "datetime": "21-03-2022 16:16" 
+                        },
+                        {
+                            "message": "message 2",
+                            "datetime": "21-03-2022 16:18" 
+                        },
+                        {
+                            "message": "message 3",
+                            "datetime": "21-03-2022 16:22" 
+                        }
+                    ]
+                }
+        }
+    }
+}

@@ -1,3 +1,5 @@
+#:kivy 2.1.0
+
 <MainScreen>:
     GridLayout:
         cols: 1
@@ -60,7 +62,7 @@
 
             Button:
                 text: 'Moje czaty'
-                on_press: print('My previous chats')
+                on_press: root.switch_to_chats_screen(self)
                 font_name: 'Roboto-Bold.ttf'
                 font_size: self.height/5
 
@@ -69,7 +71,7 @@
 
             Button:
                 text: 'Ustawienia'
-                on_press: print('Settings')
+                on_press: root.switch_to_settings_screen(self)
                 font_name: 'Roboto-Bold.ttf'
                 font_size: self.height/5
 

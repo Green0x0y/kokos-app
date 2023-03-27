@@ -1,0 +1,116 @@
+#:import Factory kivy.factory.Factory
+#:kivy 2.1.0
+
+<AddRegistration@Popup>
+   auto_dismiss: False
+   size_hint: 0.6, 0.6
+   pos_hint: {"x":0.2, "top": 0.9}
+   title: "Dodaj nową rejestrację"
+   BoxLayout:
+      orientation: 'vertical'
+      Label:
+         text: "Podaj numer rejestracyjny"
+         font_size: 24
+      RoundedInput:
+         size_hint: (0.6, 0.4)
+         pos_hint: {"x":0.2, "top": 0.9}
+      Button:
+         text: "Dodaj"
+         size_hint: (0.7, 0.3)
+         pos_hint: {"x":0.15, "top": 0.9}
+         on_release: root.dismiss()
+
+<ChangePassword@Popup>
+   auto_dismiss: False
+   size_hint: 0.6, 0.6
+   pos_hint: {"x":0.2, "top": 0.9}
+   title: "Zmień hasło"
+   BoxLayout:
+      orientation: 'vertical'
+      Label:
+         text: "Podaj aktualne hasło"
+         font_size: 24
+      RoundedInput:
+         size_hint_x: 1
+      Label:
+         text: "Podaj nowe hasło"
+         font_size: 24
+      RoundedInput:
+         size_hint_x: 1
+      Button:
+         text: "Zmień"
+         on_release: root.dismiss()
+
+<SettingsScreen>:
+   canvas.before:
+      Color:
+         rgba: (0.4, 0.6, 1, 1)
+      Rectangle:
+         pos: self.pos
+         size: self.size
+   BoxLayout:
+      orientation: 'vertical'
+      spacing: self.height/40
+      Label:
+         text: "Ustawienia"
+         font_size: self.height/2
+         font_name: 'Roboto-Bold.ttf'
+      BoxLayout:
+         canvas.before:
+            Color:
+               rgba: (0.1, 0.3, 0.6, 1)
+            Rectangle:
+               pos: self.pos
+               size: self.size
+         Label:
+            id: mail_label
+            font_size: self.height/6
+            text: "Powiadomienia mailowe włączone"
+         Switch:
+            active: True
+            font_size: self.height/2
+            font_name: 'Roboto-Bold.ttf'
+            on_active: root.switch_click(self, self.active)
+      
+      Button:
+         text: "Ustawienia powiadomień"
+         font_size: self.height/5
+         font_name: 'Roboto-Bold.ttf'
+         size_hint_x: 0.7
+         size_hint_y: 0.8
+         background_color: 0.1, 0.3, 0.6, 1
+         color: 1, 1, 1, 1
+         pos_hint: {'center_x': 0.5} 
+      Button:
+         text: "Dodaj Rejestrację"
+         font_size: self.height/5
+         font_name: 'Roboto-Bold.ttf'
+         size_hint_x: 0.7
+         size_hint_y: 0.8
+         background_color: 0.1, 0.3, 0.6, 1
+         color: 1, 1, 1, 1
+         pos_hint: {'center_x': 0.5} 
+         on_release: Factory.AddRegistration().open()
+      Button:
+         text: "Zmień rejestrację"
+         font_size: self.height/5
+         font_name: 'Roboto-Bold.ttf'
+         size_hint_x: 0.7
+         size_hint_y: 0.8
+         background_color: 0.1, 0.3, 0.6, 1
+         color: 1, 1, 1, 1
+         pos_hint: {'center_x': 0.5} 
+      Button:
+         text: "Zmień hasło"
+         font_size: self.height/5
+         font_name: 'Roboto-Bold.ttf'
+         size_hint_x: 0.7
+         size_hint_y: 0.8
+         background_color: 0.1, 0.3, 0.6, 1
+         color: 1, 1, 1, 1
+         pos_hint: {'center_x': 0.5} 
+         on_release: Factory.ChangePassword().open() 
+
+      
+
+        
