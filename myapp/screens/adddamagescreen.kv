@@ -1,0 +1,50 @@
+#:kivy 2.1.0
+
+<AddDamageScreen>:
+    canvas.before:
+        Color:
+            rgba: (0.4, 0.6, 1, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        size_hint: (1,1)
+
+        orientation: 'vertical'
+        Label:
+            text: 'Dodaj szkodę'
+            font_size: root.height/10
+            font_name: 'Roboto-Bold.ttf'
+            pos_hint: {'center_x': 0.5}
+        Label:
+            font_size: root.height/20
+            font_name: 'Roboto-Bold.ttf'
+            text: 'Numer rejestracji'
+            pos_hint: {'center_x': 0.5}
+        RoundedInput:
+            text: 'ok'
+            pos_hint: {'center_x': 0.5}
+        Label:
+            text: 'Rodzaj Szkody'
+            font_size: root.height/20
+            font_name: 'Roboto-Bold.ttf'
+            pos_hint: {'center_x': 0.5}
+        RoundedInput:
+            text: 'ok'
+            pos_hint: {'center_x': 0.5}
+        Label:
+            text: 'Wiadomość'
+            font_size: root.height/20
+            font_name: 'Roboto-Bold.ttf'
+            pos_hint: {'center_x': 0.5}
+        RoundedInput:
+            text: 'ok'
+            size_hint_y: None
+            height: root.height/4
+            pos_hint: {'center_x': 0.5}
+        RoundedButton:
+            text: 'Dodaj zdjęcie'
+            pos_hint: {'center_x': 0.5}
+
+        
+        

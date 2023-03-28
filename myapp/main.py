@@ -15,7 +15,9 @@ Builder.load_file('screens/registrationscreen.kv')
 Builder.load_file('screens/signupscreen.kv')
 Builder.load_file('screens/qrscreen.kv')
 Builder.load_file('screens/settingsscreen.kv')
-# Builder.load_file('chatsscreen.kv')
+Builder.load_file('screens/settingsscreen.kv')
+Builder.load_file('screens/adddamagescreen.kv')
+# Builder.load_file('screens/hatsscreen.kv')
 Window.size = (1000, 1000)
 
 class LoginScreen(Screen):
@@ -73,6 +75,9 @@ class RegistrationScreen(Screen):
         code = self.ids.code_input.text
         if len(code) != 8:
             print("Code must be 8 characters long")
+        else:
+            self.manager.current = 'damage'
+        
 class SignUpScreen(Screen):
     def switch_to_login_screen(self, instance):
         # Switch to the user code screen
@@ -105,6 +110,8 @@ class SettingsScreen(Screen):
         else:
             self.ids.mail_label.text = "Powiadomienia mailowe wyłączone"
 
+class AddDamageScreen(Screen):
+    pass
 
 class MyApp(App):
     users = ["user1", "user2", "user3"]
@@ -121,6 +128,7 @@ class MyApp(App):
         screen_manager.add_widget(SignUpScreen(name='signup'))
         screen_manager.add_widget(ChatsScreen(name='chats'))
         screen_manager.add_widget(SettingsScreen(name='settings'))
+        screen_manager.add_widget(AddDamageScreen(name='damage'))
 
         return screen_manager
 
@@ -152,6 +160,10 @@ class MyApp(App):
             elif self.root.current == 'signup':
                 self.root.transition.direction = "left"
                 self.root.current = 'login'
+                return True
+            elif self.root.current == 'damage':
+                self.root.transition.direction = "right"
+                self.root.current = 'main'
                 return True
 
 
