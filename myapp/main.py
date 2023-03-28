@@ -5,6 +5,7 @@ from kivy.core.window import Window
 from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.graphics import Color, Rectangle
 from chat import ChatWindow
+from  kivy_garden.zbarcam import ZBarCam
 import json
 
 Builder.load_file('screens/loginscreen.kv')
@@ -76,6 +77,7 @@ class SignUpScreen(Screen):
     def switch_to_login_screen(self, instance):
         # Switch to the user code screen
         self.manager.current = 'login'
+
 class QRScreen(Screen):
     def show_qr_code(self, instance, symbol):
         self.ids.qr_code_label.text = f"QR code found"
@@ -83,7 +85,7 @@ class QRScreen(Screen):
 class ChatsScreen(Screen):
     def __init__(self, **kw):
         super().__init__(**kw)
-        file = open("myapp/data/mock_data.json", "r")
+        file = open("data/mock_data.json", "r")
         data = json.load(file)
         file.close()
         
@@ -133,7 +135,7 @@ class MyApp(App):
                 return True
             elif self.root.current == 'registration':
                 self.root.transition.direction = "right"
-                self.root.current = 'login'
+                self.root.current = 'main'
                 return True
             elif self.root.current == 'chats':
                 self.root.transition.direction = "right"
@@ -146,6 +148,10 @@ class MyApp(App):
             elif self.root.current == 'qr':
                 self.root.transition.direction = "right"
                 self.root.current = 'main'
+                return True
+            elif self.root.current == 'signup':
+                self.root.transition.direction = "left"
+                self.root.current = 'login'
                 return True
 
 
