@@ -16,7 +16,7 @@
 
         Image:
             source: 'data/logo.png'
-            size_hint_y: 0.5
+            size_hint_y: 0.3
 
         Label:
             size_hint_y: 0.25
@@ -53,7 +53,7 @@
                     Color:
                         rgba: (0.5, 0.5, 0.5, 1)
             TextInput:
-                id: username_input
+                id: email_input
                 hint_text: 'Email'
                 font_size: self.height/3
                 padding: (self.width * 0.1, self.height*0.3)
@@ -130,6 +130,7 @@
                 background_color: 0.1, 0.3, 0.6, 1
                 color: 1, 1, 1, 1
                 pos_hint: {'center_x': 0.5}
+                on_press: root.add_user(self)
             Button:
                 background_color: 0.4, 0.6, 1, 0
                 text: 'Mam już konto'

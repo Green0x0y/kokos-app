@@ -10,7 +10,8 @@
             width: 2
     ZBarCam:
         id: qrcodecam
-        on_symbols: root.show_qr_code(*args)
+        #on_symbols: root.show_qr_code(*args);
+        on_symbols: root.switch_to_damage(self);
     Label:
         id:qr_code_label
         size_hint:None, None
