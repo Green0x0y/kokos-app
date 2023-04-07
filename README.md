@@ -15,6 +15,7 @@ he can scan the QR code and send a message directly to the car owner.
 - Python
 - Kivy
 - Firebase
+
 Note: MongoDB will replace Firebase in the future for database management.
 
 ## Collaborators
