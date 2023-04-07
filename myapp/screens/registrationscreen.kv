@@ -18,7 +18,13 @@
             font_size: self.height/6
             text: 'Rejestracja użytkownika'
             font_name: 'Roboto-Bold.ttf'
-
+        Label:
+            id: error_label
+            text: ""
+            color: 0.9, 0, 0, 1
+            spacing: 0
+            padding: 0, 0
+            size_hint_y: 0.3
 
         BoxLayout:
             size_hint_y: 2
@@ -47,7 +53,7 @@
 
             Button:
                 text: 'Szukaj'
-                on_press: root.verify_code(self)
+                on_press: root.go_to_chat(self)
                 font_name: 'Roboto-Bold.ttf'
                 font_size: self.height/4
                 size_hint_x: 0.8
