@@ -21,11 +21,12 @@ he can scan the QR code and send a message directly to the car owner.
 - Sebastian Soczawa
 
 ## dev setup
-git clone https://github.com/Green0x0y/Kokos_App.git
-cd cd myapp
-virtualenv -p python3 venv
-source venv/bin/activate
-pip install -r requirements.txt
-python3 ./main.py
+
+- git clone https://github.com/Green0x0y/Kokos_App.git 
+- cd myapp
+- virtualenv -p python3 venv
+- source venv/bin/activate
+- pip install -r requirements.txt
+- python3 ./main.py
 
 
