@@ -1,0 +1,18 @@
+<YourQrCodeScreen>:
+    canvas:
+        Color:
+            rgba: (0.4, 0.6, 1, 1)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: 0.6, 0.6
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        Image:
+            id: qr_code_image
+            source: ''
+            size_hint_y: 1
+            allow_stretch: True

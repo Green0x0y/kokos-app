@@ -1,6 +1,6 @@
 import firebase
 from kivy.uix.screenmanager import Screen
-
+import hashlib
 
 class SignUpScreen(Screen):
 
@@ -33,9 +33,10 @@ class SignUpScreen(Screen):
         elif len(password_input) < 7:
             error_label.text = "Hasło musi mieć conajmniej 7 znaków"
         else:
+            email_hash = hashlib.sha256(email_input.encode()).hexdigest()
             user_data = {
                 'username': username_input,
-                'qr_code': '',
+                'qr_code': email_hash,
                 'registrations': {}
             }
 

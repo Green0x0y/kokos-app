@@ -1,3 +1,6 @@
+import base64
+import tempfile
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -12,6 +15,8 @@ from data.AuthService import AuthService
 from data.DataProvider import DataProvider
 import json
 import firebase
+import qrcode
+from io import BytesIO
 
 # from firebase_admin import credentials, db
 # cred = credentials.Certificate('data/kokos-dd14a-firebase-adminsdk-dnceg-c713762a6a.json')
@@ -38,9 +43,10 @@ Builder.load_file('screens/mainscreen.kv')
 Builder.load_file('screens/usercodescreen.kv')
 Builder.load_file('screens/registrationscreen.kv')
 Builder.load_file('screens/signupscreen.kv')
-#Builder.load_file('screens/qrscreen.kv')
+# Builder.load_file('screens/qrscreen.kv')
 Builder.load_file('screens/settingsscreen.kv')
 Builder.load_file('screens/adddamagescreen.kv')
+Builder.load_file('screens/yourqrcodescreen.kv')
 Window.size = (600, 600)
 
 
@@ -141,13 +147,40 @@ class SettingsScreen(Screen):
             self.ids.mail_label.text = "Powiadomienia mailowe włączone"
         else:
             self.ids.mail_label.text = "Powiadomienia mailowe wyłączone"
+    def switch_to_my_qr_code(self, instance):
+        self.manager.current = 'yourqrcode'
 
+class YourQrCodeScreen(Screen):
+
+    def __init__(self, auth_service, db, **kw):
+        super().__init__(**kw)
+        self.auth = auth_service
+        self.db = db
+    def on_enter(self, *args):
+        self.show_qr_code()
+    def show_qr_code(self):
+        user_data = self.db.get_user_data(self.auth.user['localId']).get()
+        qr_data = f"User ID: {self.auth.user['localId']}"
+        qr = qrcode.QRCode(version=1, box_size=20, border=4)
+        qr.add_data(qr_data)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+
+        # Convert PIL Image to RGBA and then to base64
+        img_rgba = img.convert('RGBA')
+        buffered = BytesIO()
+        img_rgba.save(buffered, format="PNG")
+        img_str = base64.b64encode(buffered.getvalue()).decode('utf-8')
+
+        # Update the source of the Image widget to display the QR code
+        self.ids.qr_code_image.source = f'data:image/png;base64,{img_str}'
+        self.ids.qr_code_image.reload()
 
 class AddDamageScreen(Screen):
     pass
 
-
 class MyApp(App):
+
 
 
     def build(self):
@@ -156,13 +189,14 @@ class MyApp(App):
         screen_manager = ScreenManager()
         screen_manager.add_widget(LoginScreen(auth_service, data_provider, name='login'))
         screen_manager.add_widget(MainScreen(name='main'))
-        screen_manager.add_widget(QRScreen(name='qr'))
+        screen_manager.add_widget(QRScreen( name='qr'))
         screen_manager.add_widget(RegistrationScreen(name='registration'))
         screen_manager.add_widget(UserCodeScreen(name='user_code'))
         screen_manager.add_widget(SignUpScreen(auth_service, data_provider, name='signup'))
         screen_manager.add_widget(ChatsScreen(name='chats'))
         screen_manager.add_widget(SettingsScreen(name='settings'))
         screen_manager.add_widget(AddDamageScreen(name='damage'))
+        screen_manager.add_widget(YourQrCodeScreen(auth_service, data_provider, name='yourqrcode'))
 
         return screen_manager
 
