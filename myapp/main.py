@@ -1,3 +1,6 @@
+import base64
+import tempfile
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -6,58 +9,45 @@ from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.graphics import Color, Rectangle
 from chat import ChatWindow
 from kivy_garden.zbarcam import ZBarCam
+from login import LoginScreen
+from signup import SignUpScreen
+from data.AuthService import AuthService
+from data.DataProvider import DataProvider
 import json
-import firebase_admin
+import firebase
+import qrcode
+from io import BytesIO
 
-from firebase_admin import credentials, db
-cred = credentials.Certificate('data/kokos-dd14a-firebase-adminsdk-dnceg-c713762a6a.json')
-firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://kokos-dd14a-default-rtdb.firebaseio.com/'
-})
-ref = db.reference('users')
+# from firebase_admin import credentials, db
+# cred = credentials.Certificate('data/kokos-dd14a-firebase-adminsdk-dnceg-c713762a6a.json')
+# firebase_admin.initialize_app(cred, {
+#     'databaseURL': 'https://kokos-dd14a-default-rtdb.firebaseio.com/'
+# })
 
+config = {
+    "apiKey": "AIzaSyCuFVfP62CtZdUCokK8mdjhof-FZbHkf2M",
+    "authDomain": "kokos-dd14a.firebaseapp.com",
+    "databaseURL": "https://kokos-dd14a-default-rtdb.firebaseio.com/",
+    "projectId": "kokos-dd14a",
+    "storageBucket": "kokos-dd14a.appspot.com",
+    "messagingSenderId": "517554075184",
+    "appId": "appId"
+}
+
+app = firebase.initialize_app(config)
+auth_service = AuthService(app)
+data_provider = DataProvider(app)
 
 Builder.load_file('screens/loginscreen.kv')
 Builder.load_file('screens/mainscreen.kv')
 Builder.load_file('screens/usercodescreen.kv')
 Builder.load_file('screens/registrationscreen.kv')
 Builder.load_file('screens/signupscreen.kv')
-#Builder.load_file('screens/qrscreen.kv')
+# Builder.load_file('screens/qrscreen.kv')
 Builder.load_file('screens/settingsscreen.kv')
 Builder.load_file('screens/adddamagescreen.kv')
+Builder.load_file('screens/yourqrcodescreen.kv')
 Window.size = (600, 600)
-
-
-class LoginScreen(Screen):
-    def validate_user(self, username, password):
-
-        user_ref = ref.child(username)
-        user_data = user_ref.get()
-
-        if user_data is None:
-            text = 'Użytkownik o podanej nazwie nie istnieje'
-            return False, text
-        if password != user_data.get('password'):
-            text = 'Nieprawidłowe hasło'
-            return False, text
-        return True, ""
-    def login(self, instance):
-        # Check if the username and password are correct
-        username_input = self.ids.username_input.text
-        password_input = self.ids.password_input.text
-        success, text = self.validate_user(username_input, password_input)
-        error_label = self.ids["error_label"]
-        if success:
-
-            self.manager.current = 'main'
-            error_label.text = ""
-        else:
-            error_label.text = text
-
-
-    def move_to_signup(self, instance):
-        self.manager.current = 'signup'
-
 
 
 class MainScreen(Screen):
@@ -107,14 +97,17 @@ class RegistrationScreen(Screen):
             print("Nieprawidłowy numer")
         else:
             self.manager.current = 'damage'
+
+    
     def find_user_by_registration(self):
-        ref = db.reference("users")
-        users = ref.get()
-        registration = self.ids.code_input.text
-        if users is not None:
-            for username, user in users.items():
-                if registration in user.get("registrations", []):
-                    return username
+        # ref = db.reference("users")
+        # users = ref.get()
+        # registration = self.ids.code_input.text
+        # if users is not None:
+        #     for username, user in users.items():
+        #         if registration in user.get("registrations", []):
+        #             return username
+        pass
 
         return None
     def go_to_chat(self, instance):
@@ -124,59 +117,6 @@ class RegistrationScreen(Screen):
             error_label.text = "Nie ma takiej rejestracji"
         else:
             self.manager.current = 'damage'
-
-
-
-class SignUpScreen(Screen):
-    ref = db.reference('users')
-    def check_passwords(self, password, password2):
-        return password == password2
-
-    def check_valid_email(self, email):
-        return '@' in email
-    def check_user_exists(self,email, username):
-
-        users = ref.get()
-
-        if users is not None:
-            for user_id, user in users.items():
-                if user.get('email') == email:
-                    return True, "Email już istnieje"
-                if user_id == username:
-                    return True, "Nazwa użytkownika zajęta"
-
-        return False, ""
-    def switch_to_login_screen(self, instance):
-        # Switch to the user code screen
-        self.manager.current = 'login'
-    def add_user(self, instance):
-        username_input = self.ids.username_input.text
-        password_input = self.ids.password_input.text
-        email_input = self.ids.email_input.text
-        password_input_2 = self.ids.password_input_2.text
-        error_label = self.ids["error_label"]
-
-        exists, text = self.check_user_exists(email_input, username_input)
-        if exists:
-            error_label.text = text
-        elif not self.check_valid_email(email_input):
-            error_label.text = "Nieprawidłowy adres email"
-        elif not self.check_passwords(password_input, password_input_2):
-            error_label.text = "Hasła nie są takie same"
-        elif username_input == "" or email_input == "" or password_input == "" or password_input_2 =="":
-            error_label.text = "Uzupełnij wszystkie pola"
-        elif len(password_input) < 7:
-            error_label.text = "Hasło musi mieć conajmniej 7 znaków"
-        else:
-            user_data = {
-                'id': len(ref.get()) + 1,
-                'password': password_input,
-                'qr_code': '',
-                'email': email_input
-            }
-            ref.child(username_input).set(user_data)
-            self.manager.current ='main';
-            error_label.text = ""
 
 
 class QRScreen(Screen):
@@ -207,29 +147,56 @@ class SettingsScreen(Screen):
             self.ids.mail_label.text = "Powiadomienia mailowe włączone"
         else:
             self.ids.mail_label.text = "Powiadomienia mailowe wyłączone"
+    def switch_to_my_qr_code(self, instance):
+        self.manager.current = 'yourqrcode'
 
+class YourQrCodeScreen(Screen):
+
+    def __init__(self, auth_service, db, **kw):
+        super().__init__(**kw)
+        self.auth = auth_service
+        self.db = db
+    def on_enter(self, *args):
+        self.show_qr_code()
+    def show_qr_code(self):
+        user_data = self.db.get_user_data(self.auth.user['localId']).get()
+        qr_data = f"User ID: {self.auth.user['localId']}"
+        qr = qrcode.QRCode(version=1, box_size=20, border=4)
+        qr.add_data(qr_data)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+
+        # Convert PIL Image to RGBA and then to base64
+        img_rgba = img.convert('RGBA')
+        buffered = BytesIO()
+        img_rgba.save(buffered, format="PNG")
+        img_str = base64.b64encode(buffered.getvalue()).decode('utf-8')
+
+        # Update the source of the Image widget to display the QR code
+        self.ids.qr_code_image.source = f'data:image/png;base64,{img_str}'
+        self.ids.qr_code_image.reload()
 
 class AddDamageScreen(Screen):
     pass
 
-
 class MyApp(App):
 
 
-    def build(self):
 
+    def build(self):
         Window.bind(on_keyboard=self.on_key)
         # Create the screen manager and add the login and main screens to it
         screen_manager = ScreenManager()
-        screen_manager.add_widget(LoginScreen(name='login'))
+        screen_manager.add_widget(LoginScreen(auth_service, data_provider, name='login'))
         screen_manager.add_widget(MainScreen(name='main'))
-        screen_manager.add_widget(QRScreen(name='qr'))
+        screen_manager.add_widget(QRScreen( name='qr'))
         screen_manager.add_widget(RegistrationScreen(name='registration'))
         screen_manager.add_widget(UserCodeScreen(name='user_code'))
-        screen_manager.add_widget(SignUpScreen(name='signup'))
+        screen_manager.add_widget(SignUpScreen(auth_service, data_provider, name='signup'))
         screen_manager.add_widget(ChatsScreen(name='chats'))
         screen_manager.add_widget(SettingsScreen(name='settings'))
         screen_manager.add_widget(AddDamageScreen(name='damage'))
+        screen_manager.add_widget(YourQrCodeScreen(auth_service, data_provider, name='yourqrcode'))
 
         return screen_manager
 
