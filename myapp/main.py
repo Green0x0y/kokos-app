@@ -36,11 +36,11 @@ config = {
 
 app = firebase.initialize_app(config)
 auth_service = AuthService(app)
-data_provider = DataProvider(app)
+data_provider = DataProvider(app, auth_service=auth_service)
 
 Builder.load_file('screens/loginscreen.kv')
 Builder.load_file('screens/mainscreen.kv')
-Builder.load_file('screens/usercodescreen.kv')
+Builder.load_file('screens/usercodescreen.kv')  
 Builder.load_file('screens/registrationscreen.kv')
 Builder.load_file('screens/signupscreen.kv')
 # Builder.load_file('screens/qrscreen.kv')
@@ -51,7 +51,10 @@ Window.size = (600, 600)
 
 
 class MainScreen(Screen):
-
+    # user_data = self.db.get_user_data(auth_service.user['localId']).get()
+    def __init__(self, data_provider: DataProvider, **kw):
+        super().__init__(**kw)
+        
     def switch_to_user_code_screen(self, instance):
         # Switch to the user code screen
         self.manager.transition.direction = "left"
@@ -77,6 +80,11 @@ class MainScreen(Screen):
         self.manager.transition.direction = "left"
         self.manager.current = 'chats'
 
+    def on_enter(self):
+        label = self.ids.username
+        if auth_service.user is None:
+            label.text = " unresgistered"
+        label.text = "Cześć " + data_provider.get_current_user_data()['username'] + "!"
 
 class UserCodeScreen(Screen):
     def verify_code(self, instance):
@@ -159,7 +167,7 @@ class YourQrCodeScreen(Screen):
     def on_enter(self, *args):
         self.show_qr_code()
     def show_qr_code(self):
-        user_data = self.db.get_user_data(self.auth.user['localId']).get()
+        user_data = self.db.get_user_data(self.auth.user['localId'])
         qr_data = f"User ID: {self.auth.user['localId']}"
         qr = qrcode.QRCode(version=1, box_size=20, border=4)
         qr.add_data(qr_data)
@@ -188,7 +196,7 @@ class MyApp(App):
         # Create the screen manager and add the login and main screens to it
         screen_manager = ScreenManager()
         screen_manager.add_widget(LoginScreen(auth_service, data_provider, name='login'))
-        screen_manager.add_widget(MainScreen(name='main'))
+        screen_manager.add_widget(MainScreen(data_provider, name='main'))
         screen_manager.add_widget(QRScreen( name='qr'))
         screen_manager.add_widget(RegistrationScreen(name='registration'))
         screen_manager.add_widget(UserCodeScreen(name='user_code'))
@@ -232,7 +240,10 @@ class MyApp(App):
                 self.root.transition.direction = "right"
                 self.root.current = 'main'
                 return True
-
+            elif self.root.current == 'yourqrcode':
+                self.root.transition.direciton = "right"
+                self.root.current = 'settings'
+                return True
 
 if __name__ == '__main__':
     MyApp().run()
