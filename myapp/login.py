@@ -1,13 +1,14 @@
 from kivy.uix.screenmanager import ScreenManager, Screen
 from data.AuthService import AuthService
+from data.DataProvider import DataProvider
 
 
 
 class LoginScreen(Screen):
 
-    def __init__(self, auth_service, db, **kw):
+    def __init__(self, auth_service: AuthService, db: DataProvider, **kw):
         super().__init__(**kw)
-        # self.ref = db.reference('users')
+        self.db = db
         self.auth = auth_service
 
     def login(self, instance):
@@ -16,6 +17,7 @@ class LoginScreen(Screen):
         success, text = self.auth.login(email=email_input, password=password_input)
         error_label = self.ids["error_label"]
         if success:
+            self.db.set_current_user_data(str(self.auth.get_uid()))
             self.manager.current = 'main'
         error_label.text = text
 
