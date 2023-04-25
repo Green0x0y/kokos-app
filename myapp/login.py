@@ -17,7 +17,7 @@ class LoginScreen(Screen):
         success, text = self.auth.login(email=email_input, password=password_input)
         error_label = self.ids["error_label"]
         if success:
-            self.db.set_current_user_data(str(self.auth.get_uid()))
+            self.db.set_current_user_data(self.auth.get_uid())
             self.manager.current = 'main'
         error_label.text = text
 
