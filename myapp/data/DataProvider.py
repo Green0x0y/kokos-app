@@ -8,10 +8,13 @@ class DataProvider:
         self.db = firebase.database()
         self.current_user_data = self.db.child("users").child("ktos").get().val()
         self.auth_service = auth_service
-    def get_conversations(self):
-        return self.db.child("conversations").child("conversation_to")
-    def get_conversation_messages(self, user):
-        return self.db.child("conversations").child("conversation_to").child(user)
+
+    def get_conversations(self, receiver):
+        return self.db.child("users").child(receiver).child("conversations").child("conversation_to")
+
+    def get_conversation_messages(self, receiver,sender):
+        return self.db.child("users").child(receiver).child("conversations").child("conversation_to").child(sender)
+
     def get_user_data(self, uid):
         return self.db.child("users").child(uid)
     
