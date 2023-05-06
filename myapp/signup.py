@@ -30,6 +30,11 @@ class SignUpScreen(Screen):
             if success:
                 email_hash = hashlib.sha256(email_input.encode()).hexdigest()
                 user_data = OrderedDict({
+                    'conversation': {
+                        'conversation_to': {
+
+                        }
+                    },
                     'username': username_input,
                     'qr_code': email_hash,
                     'registrations': {}
