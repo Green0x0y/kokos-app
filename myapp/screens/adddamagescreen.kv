@@ -21,29 +21,38 @@
             font_name: 'Roboto-Bold.ttf'
             text: 'Numer rejestracji'
             pos_hint: {'center_x': 0.5}
-        RoundedInput:
+        Label:
             id: registration
             text: 'ok'
-            pos_hint: {'center_x': 0.5}
-        Label:
-            text: 'Rodzaj Szkody'
             font_size: root.height/20
-            font_name: 'Roboto-Bold.ttf'
             pos_hint: {'center_x': 0.5}
-        RoundedInput:
-            text: 'ok'
-            pos_hint: {'center_x': 0.5}
+        #Label:
+        #    text: 'Rodzaj Szkody'
+        #    font_size: root.height/20
+        #    font_name: 'Roboto-Bold.ttf'
+        #    pos_hint: {'center_x': 0.5}
+        #RoundedInput:
+        #    text: 'ok'
+        #    pos_hint: {'center_x': 0.5}
         Label:
             text: 'Wiadomość'
             font_size: root.height/20
             font_name: 'Roboto-Bold.ttf'
             pos_hint: {'center_x': 0.5}
         RoundedInput:
-            text: 'ok'
+            id: message
+            text: ''
             size_hint_y: None
             height: root.height/4
             pos_hint: {'center_x': 0.5}
+        Label:
+            id: result
+            height: root.height/10
+            font_size: root.height/20
+            text: ''
         RoundedButton:
-            text: 'Dodaj zdjęcie'
+            text: 'Wyślij'
             pos_hint: {'center_x': 0.5}
+            on_press: root.send()
+
 

@@ -21,6 +21,5 @@ class LoginScreen(Screen):
             self.manager.current = 'main'
         error_label.text = text
 
-
     def move_to_signup(self, instance):
         self.manager.current = 'signup'

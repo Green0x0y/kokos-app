@@ -213,6 +213,16 @@ class AddDamageScreen(Screen):
             rounded_input = self.ids.registration
             rounded_input.text = self.registration
 
+    def send(self):
+        message = self.ids.message.text
+        if message == "":
+            return
+        # self.manager.transition.args = {'message': message}
+        self.db.add_message(message, auth_service.user['localId'], self.receiver_id)
+        self.ids.message.text = ''
+        self.ids.result.text = 'Wiadomość wysłana!'
+
+
 
 class MyApp(App):
 
