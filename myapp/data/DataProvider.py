@@ -9,6 +9,8 @@ class DataProvider:
         self.current_user_data = self.db.child("users").child("ktos").get().val()
         self.auth_service = auth_service
 
+    def get_users(self):
+        return self.db.child("users")
     def get_conversations(self, receiver):
         return self.db.child("users").child(receiver).child("conversations").child("conversation_to")
 

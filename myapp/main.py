@@ -1,6 +1,5 @@
 import base64
 import tempfile
-
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -13,7 +12,7 @@ from login import LoginScreen
 from signup import SignUpScreen
 from data.AuthService import AuthService
 from data.DataProvider import DataProvider
-import json
+# import json
 import firebase
 import qrcode
 from io import BytesIO
@@ -99,15 +98,12 @@ class UserCodeScreen(Screen):
 
 
 class RegistrationScreen(Screen):
-    def verify_code(self, instance):
-        code = self.ids.code_input.text
-        if len(code) != 8:
-            print("Nieprawidłowy numer")
-        else:
-            self.manager.current = 'damage'
+    def __init__(self, auth_service, db, **kw):
+        super().__init__(**kw)
+        self.auth = auth_service
+        self.db = db
 
-    
-    def find_user_by_registration(self):
+    def find_user_by_registration(self, registration):
         # ref = db.reference("users")
         # users = ref.get()
         # registration = self.ids.code_input.text
@@ -115,17 +111,28 @@ class RegistrationScreen(Screen):
         #     for username, user in users.items():
         #         if registration in user.get("registrations", []):
         #             return username
-        pass
-
-        return None
+        users = self.db.get_users().get()
+        for user in users.each():
+            user_data = self.db.get_user_data(user.key()).child('registrations').get().val()
+            print(user_data)
+            if user_data is not None and registration in user_data:
+                 return user.key(), ""
+        else:
+            return None, ""
 
     def go_to_chat(self, instance):
-        username = self.find_user_by_registration()
+        registration = self.ids.code_input.text
         error_label = self.ids["error_label"]
+        error_label.text = ""
+        if len(registration) != 8:
+            error_label.text = "Nieprawidłowa dłogość"
+        userId, error = self.find_user_by_registration(registration)
+        error_label.text = error
 
-        if username == None:
+        if not userId:
             error_label.text = "Nie ma takiej rejestracji"
         else:
+            self.manager.transition.args = {'receiver_id': userId, 'registration': registration}
             self.manager.current = 'damage'
 
 
@@ -192,13 +199,22 @@ class YourQrCodeScreen(Screen):
         self.ids.qr_code_image.reload()
 
 
-
 class AddDamageScreen(Screen):
-    pass
+    def __init__(self, db,  **kw):
+        super().__init__(**kw)
+        self.db = db
+        self.receiver_id = None
+        self.registration = None
+
+    def on_enter(self, *args):
+        self.receiver_id = self.manager.transition.args.get('receiver_id')
+        self.registration = self.manager.transition.args.get('registration')
+        if self.receiver_id:
+            rounded_input = self.ids.registration
+            rounded_input.text = self.registration
+
 
 class MyApp(App):
-
-
 
     def build(self):
         Window.bind(on_keyboard=self.on_key)
@@ -207,12 +223,12 @@ class MyApp(App):
         screen_manager.add_widget(LoginScreen(auth_service, data_provider, name='login'))
         screen_manager.add_widget(MainScreen(data_provider, name='main'))
         screen_manager.add_widget(QRScreen( name='qr'))
-        screen_manager.add_widget(RegistrationScreen(name='registration'))
+        screen_manager.add_widget(RegistrationScreen(auth_service, data_provider, name='registration'))
         screen_manager.add_widget(UserCodeScreen(name='user_code'))
         screen_manager.add_widget(SignUpScreen(auth_service, data_provider, name='signup'))
         screen_manager.add_widget(ChatsScreen(auth_service, data_provider, name='chats'))
         screen_manager.add_widget(SettingsScreen(name='settings'))
-        screen_manager.add_widget(AddDamageScreen(name='damage'))
+        screen_manager.add_widget(AddDamageScreen(data_provider, name='damage'))
         screen_manager.add_widget(YourQrCodeScreen(auth_service, data_provider, name='yourqrcode'))
 
         return screen_manager
