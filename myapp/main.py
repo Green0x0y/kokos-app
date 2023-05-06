@@ -144,22 +144,17 @@ class ChatsScreen(Screen):
         self.db = db
 
     def on_enter(self, *args):
-        user_data = self.auth.get_uid();
-        print("UID: ", user_data)
 
+        conversations = self.db.get_conversations(self.auth.get_uid()).get()
 
-        conversations = self.db.get_conversations().get()
+        chatsPanel = TabbedPanel(do_default_tab=False, tab_pos='left_top')
 
-        chatsPanel = TabbedPanel(do_default_tab=False,
-                                 tab_pos='left_top')
         for user in conversations.each():
-            # if user.key() ==
-            user_data = self.db.get_conversation_messages(user.key()).get()
-            chat = ChatWindow(user.key(), user_data.val())
+            user_data = self.db.get_conversation_messages(self.auth.get_uid(), user.key()).get()
+            username = self.db.get_user_data(user.key()).get().val()['username']
+            chat = ChatWindow(username, user_data.val())
 
             chatsPanel.add_widget(chat)
-
-
 
         self.add_widget(chatsPanel)
 
