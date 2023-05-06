@@ -47,7 +47,7 @@ Builder.load_file('screens/signupscreen.kv')
 Builder.load_file('screens/settingsscreen.kv')
 Builder.load_file('screens/adddamagescreen.kv')
 Builder.load_file('screens/yourqrcodescreen.kv')
-Window.size = (600, 600)
+Window.size = (500, 700)
 
 
 class MainScreen(Screen):
@@ -118,9 +118,11 @@ class RegistrationScreen(Screen):
         pass
 
         return None
+
     def go_to_chat(self, instance):
         username = self.find_user_by_registration()
         error_label = self.ids["error_label"]
+
         if username == None:
             error_label.text = "Nie ma takiej rejestracji"
         else:
@@ -130,21 +132,34 @@ class RegistrationScreen(Screen):
 class QRScreen(Screen):
     def show_qr_code(self, instance, symbol):
         self.ids.qr_code_label.text = f"QR code found"
+
     def switch_to_damage(self, instance):
         self.manager.current = 'damage'
 
+
 class ChatsScreen(Screen):
-    def __init__(self, **kw):
+    def __init__(self, auth_service, db, **kw):
         super().__init__(**kw)
-        file = open("data/mock_data.json", "r")
-        data = json.load(file)
-        file.close()
+        self.auth = auth_service
+        self.db = db
+
+    def on_enter(self, *args):
+        user_data = self.auth.get_uid();
+        print("UID: ", user_data)
+
+
+        conversations = self.db.get_conversations().get()
 
         chatsPanel = TabbedPanel(do_default_tab=False,
                                  tab_pos='left_top')
-        for user in data['users']['1']['conversation_to']:
-            chat = ChatWindow(user, data['users']['1']['conversation_to'])
+        for user in conversations.each():
+            # if user.key() ==
+            user_data = self.db.get_conversation_messages(user.key()).get()
+            chat = ChatWindow(user.key(), user_data.val())
+
             chatsPanel.add_widget(chat)
+
+
 
         self.add_widget(chatsPanel)
 
@@ -165,10 +180,7 @@ class YourQrCodeScreen(Screen):
         self.auth = auth_service
         self.db = db
     def on_enter(self, *args):
-        self.show_qr_code()
-    def show_qr_code(self):
-        user_data = self.db.get_user_data(self.auth.user['localId'])
-        qr_data = f"User ID: {self.auth.user['localId']}"
+        qr_data = data_provider.get_current_user_data()['qr_code'];
         qr = qrcode.QRCode(version=1, box_size=20, border=4)
         qr.add_data(qr_data)
         qr.make(fit=True)
@@ -183,6 +195,8 @@ class YourQrCodeScreen(Screen):
         # Update the source of the Image widget to display the QR code
         self.ids.qr_code_image.source = f'data:image/png;base64,{img_str}'
         self.ids.qr_code_image.reload()
+
+
 
 class AddDamageScreen(Screen):
     pass
@@ -201,7 +215,7 @@ class MyApp(App):
         screen_manager.add_widget(RegistrationScreen(name='registration'))
         screen_manager.add_widget(UserCodeScreen(name='user_code'))
         screen_manager.add_widget(SignUpScreen(auth_service, data_provider, name='signup'))
-        screen_manager.add_widget(ChatsScreen(name='chats'))
+        screen_manager.add_widget(ChatsScreen(auth_service, data_provider, name='chats'))
         screen_manager.add_widget(SettingsScreen(name='settings'))
         screen_manager.add_widget(AddDamageScreen(name='damage'))
         screen_manager.add_widget(YourQrCodeScreen(auth_service, data_provider, name='yourqrcode'))

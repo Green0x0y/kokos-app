@@ -17,9 +17,10 @@ class ChatWindow(TabbedPanelItem):
         super(ChatWindow, self).__init__(**kwargs)
         self.text=user
 
-        layout = BoxLayout(orientation='vertical',
-                            size_hint=(1, 1))
-        chat_box = ChatBox(self, user, user_data[user])
+        layout = BoxLayout(orientation='vertical', size_hint=(1, 1))
+        # chat_box = ChatBox(self, user, user_data[user])
+        chat_box = ChatBox(self, user, user_data)
+
 
         send_message = SendMessage()
 
