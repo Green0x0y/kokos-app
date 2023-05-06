@@ -1,6 +1,6 @@
 {
-    "users":{
-        "1":{
+    "conversations":{
+
             "name": "Sebastian",
             "conversation_to": 
                 {
@@ -80,40 +80,6 @@
                         }
                     ]
                 }
-        },
-        "2":{
-            "name": "Laura",
-            "conversation_to": 
-                {
-                    "1": [
-                        {
-                            "message": "message 1",
-                            "datetime": "21-03-2022 16:16" 
-                        },
-                        {
-                            "message": "message 2",
-                            "datetime": "21-03-2022 16:18" 
-                        },
-                        {
-                            "message": "message 3",
-                            "datetime": "21-03-2022 16:21" 
-                        }
-                    ],
-                    "2": [
-                        {
-                            "message": "message 1",
-                            "datetime": "21-03-2022 16:16" 
-                        },
-                        {
-                            "message": "message 2",
-                            "datetime": "21-03-2022 16:18" 
-                        },
-                        {
-                            "message": "message 3",
-                            "datetime": "21-03-2022 16:22" 
-                        }
-                    ]
-                }
-        }
+
     }
 }
