@@ -280,6 +280,7 @@ class MyApp(App):
                 self.root.current = 'settings'
                 return True
 
+
 if __name__ == '__main__':
     MyApp().run()
 

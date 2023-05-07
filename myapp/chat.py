@@ -37,7 +37,9 @@ class ChatBox(ScrollView):
 
         layout = GridLayout(cols=1, spacing=10, size_hint_y=None)
         layout.bind(minimum_height=layout.setter('height'))
-        for msg in user_messages:
+        for key, msg in enumerate(user_messages):
+            msg = user_messages[msg]
+            print(msg, key)
             new_message = Message(parent, user + " on " + msg["datetime"] + " wrote: ", msg["message"])
             layout.add_widget(new_message)
 

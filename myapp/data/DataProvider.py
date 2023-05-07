@@ -26,8 +26,12 @@ class DataProvider:
             'message': message
             })
 
+    def get_datetime(self, msg):
+        return msg.child
+
     def get_user_data(self, uid):
         return self.db.child("users").child(uid)
+
     
     def get_current_user_data(self):
         return self.current_user_data
