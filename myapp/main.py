@@ -1,4 +1,5 @@
 import base64
+import time
 import tempfile
 from kivy.app import App
 from kivy.lang import Builder
@@ -179,17 +180,15 @@ class ChatsScreen(Screen):
         self.db = db
 
     def on_enter(self, *args):
-
-        conversations = self.db.get_conversations(self.auth.get_uid()).get()
+        conversations = self.db.get_conversations(self.auth.get_uid())
         chatsPanel = TabbedPanel(do_default_tab=False, tab_pos='left_top')
 
-        if conversations.val() != None:
-            for user in conversations.each():
-                user_data = self.db.get_conversation_messages(self.auth.get_uid(), user.key()).get()
-                username = self.db.get_user_data(user.key()).get().val()['username']
-                chat = ChatWindow(username, user_data.val())
-
-                chatsPanel.add_widget(chat)
+        if len(conversations) != 0:
+            for key in conversations:
+                other_user = self.db.get_other_uid(self.auth.get_uid(), key)
+                if conversations[key] is not None:
+                    chat = ChatWindow(self.db, self.auth,other_user, conversations[key])
+                    chatsPanel.add_widget(chat)
         self.add_widget(chatsPanel)
 
 
@@ -245,9 +244,12 @@ class AddDamageScreen(Screen):
         if message == "":
             return
         # self.manager.transition.args = {'message': message}
-        self.db.add_message(message, auth_service.user['localId'], self.receiver_id)
+        # self.db.add_message(message, auth_service.user['localId'], self.receiver_id)\
+        self.db.add_conversation2(message, auth_service.user['localId'], self.receiver_id)
         self.ids.message.text = ''
         self.ids.result.text = 'Wiadomość wysłana!'
+        self.manager.transition.args = {"to" : self.receiver_id}
+        self.manager.current = 'chats'
 
 
 

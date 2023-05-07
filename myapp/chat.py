@@ -13,20 +13,36 @@ Builder.load_file('custom_widgets/roundedinput.kv')
 Builder.load_file('custom_widgets/roundedbutton.kv')
 
 class ChatWindow(TabbedPanelItem):
-    def __init__(self, user, user_data, **kwargs):
+    def __init__(self, db, auth,  receiver, user_data, **kwargs):
         super(ChatWindow, self).__init__(**kwargs)
-        self.text=user
+        self.text=receiver
+        self.db = db
+        self.auth = auth
+        self.receiver = receiver
+
+        self.username = self.db.get_user_data(receiver).get().val()['username']
 
         layout = BoxLayout(orientation='vertical', size_hint=(1, 1))
-        # chat_box = ChatBox(self, user, user_data[user])
-        chat_box = ChatBox(self, user, user_data)
+        chat_box = ChatBox(self, self.username, user_data)
 
 
         send_message = SendMessage()
 
+        send_button = RoundedButton("send")
+        send_button.bind(on_press=self.send_message)
+        self.send_input = TextInput()
+        self.send_input.id = "msg_to_send"
+
+        send_message.add_widget(self.send_input)
+        send_message.add_widget(send_button)
+
         layout.add_widget(chat_box)
         layout.add_widget(send_message)
         self.add_widget(layout)
+
+    def send_message(self, instance):
+        message = self.send_input.text
+        self.db.add_message(message, self.auth.get_uid(), self.receiver)
 
 
 class ChatBox(ScrollView):
@@ -37,10 +53,10 @@ class ChatBox(ScrollView):
 
         layout = GridLayout(cols=1, spacing=10, size_hint_y=None)
         layout.bind(minimum_height=layout.setter('height'))
-        for key, msg in enumerate(user_messages):
-            msg = user_messages[msg]
-            print(msg, key)
-            new_message = Message(parent, user + " on " + msg["datetime"] + " wrote: ", msg["message"])
+
+        for msg in user_messages:
+            msg_val = msg.val()
+            new_message = Message(parent, user + " on " + msg_val["datetime"] + " wrote: ", msg_val["message"])
             layout.add_widget(new_message)
 
         self.add_widget(layout)
@@ -111,8 +127,6 @@ class SendMessage(BoxLayout):
             Color(0.4, 0.6, 1, 1)
             self.rect = Rectangle(size=self.size, pos=self.pos)
 
-        self.add_widget(RoundedInput())
-        self.add_widget(RoundedButton("send"))
 
     def on_size(self, *args):
         self.rect.size = self.size
@@ -126,4 +140,6 @@ class RoundedButton(Button):
         self.text = text
 
 class RoundedInput(TextInput):
-    pass
+    def __init__(self, **kwargs):
+        super(TextInput, self).__init__(**kwargs)
+    

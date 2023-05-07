@@ -13,22 +13,6 @@ class DataProvider:
     def get_users(self):
         return self.db.child("users")
 
-    def get_conversations(self, receiver):
-        return self.db.child("users").child(receiver).child("conversations").child("conversation_to")
-
-    def get_conversation_messages(self, receiver, sender):
-        return self.db.child("users").child(receiver).child("conversations").child("conversation_to").child(sender)
-
-    def add_message(self, message, sender, reciver):
-        self.db.child("users").child(reciver).child("conversations").child("conversation_to").child(sender).push(
-            {
-            'datetime':   datetime.now().strftime('%d-%m-%Y %H:%M:%S'),
-            'message': message
-            })
-
-    def get_datetime(self, msg):
-        return msg.child
-
     def get_user_data(self, uid):
         return self.db.child("users").child(uid)
 
@@ -42,3 +26,48 @@ class DataProvider:
     def add_user_data(self, user_data, uid):
         self.current_user_data = user_data
         self.db.child("users").child(str(uid)).set(user_data)
+
+    def add_conversation(self, message, sender, receiver):
+        conversationID = sender+":"+receiver
+        conversations = self.db.child("users").child(sender).child("conversations").get().val()
+        if conversations is None:
+            conversations = {}
+        conversations.update({conversationID: True})
+
+        self.db.child("users").child(sender).child("conversations").update(conversations)
+        if(sender != receiver):
+            self.db.child("users").child(receiver).child("conversations").update(conversations)
+
+        self.db.child("conversations").child(conversationID).push({
+            'from' : sender,
+            'to' : receiver,
+            'datetime':   datetime.now().strftime('%d-%m-%Y %H:%M:%S'),
+            'message': message
+        })
+
+    def get_conversations(self, user) -> dict:
+        IDs = self.db.child("users").child(user).child("conversations").get().val()
+        conversations = {}
+        if IDs is not None:
+            for id in IDs:
+                conversations.update({ id : self.db.child("conversations").child(id).get()})
+        return conversations
+    
+    def add_message(self, message, sender, receiver):
+        conversationID = self.get_conversationID(sender, receiver)
+        self.db.child("conversations").child(conversationID).push({
+            'from' : sender,
+            'to' : receiver,
+            'datetime':   datetime.now().strftime('%d-%m-%Y %H:%M:%S'),
+            'message': message
+        })
+
+    def get_conversationID(self, sender, receiver):
+        if sender > receiver:
+            return sender + ":" + receiver
+        else:
+            return receiver + ":" + sender
+    
+    def get_other_uid(self, uid, conv_ID):
+        other_id = conv_ID.replace(uid, "").replace(":", "")
+        return other_id
