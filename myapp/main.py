@@ -12,6 +12,7 @@ from login import LoginScreen
 from signup import SignUpScreen
 from data.AuthService import AuthService
 from data.DataProvider import DataProvider
+from PIL import Image
 # import json
 import firebase
 import qrcode
@@ -42,7 +43,7 @@ Builder.load_file('screens/mainscreen.kv')
 Builder.load_file('screens/usercodescreen.kv')  
 Builder.load_file('screens/registrationscreen.kv')
 Builder.load_file('screens/signupscreen.kv')
-# Builder.load_file('screens/qrscreen.kv')
+Builder.load_file('screens/qrscreen.kv')
 Builder.load_file('screens/settingsscreen.kv')
 Builder.load_file('screens/adddamagescreen.kv')
 Builder.load_file('screens/yourqrcodescreen.kv')
@@ -134,14 +135,41 @@ class RegistrationScreen(Screen):
         else:
             self.manager.transition.args = {'receiver_id': userId, 'registration': registration}
             self.manager.current = 'damage'
+            error_label.text = ""
 
 
 class QRScreen(Screen):
-    def show_qr_code(self, instance, symbol):
-        self.ids.qr_code_label.text = f"QR code found"
+    def __init__(self, auth_service, db, **kw):
+        super().__init__(**kw)
+        self.auth = auth_service
+        self.db = db
+    def find_user_by_qr(self, qr_data):
+        users = self.db.get_users().get()
+        for user in users.each():
+            user_qr_code = self.db.get_user_data(user.key()).child('qr_code').get().val()
 
-    def switch_to_damage(self, instance):
-        self.manager.current = 'damage'
+            if user_qr_code is not None and qr_data == user_qr_code:
+                print("kod" ,user_qr_code)
+                return user.key(), ""
+        else:
+            return None, ""
+
+
+    def switch_to_damage(self, instance, *args):
+        symbol = instance.symbols[-1]  # Ostatni zeskanowany symbol
+        qr_data = symbol.data.decode('utf-8')
+        print(qr_data)
+        userId, error = self.find_user_by_qr(qr_data)
+        self.ids.qr_code_label.text = error
+
+        if not userId:
+            self.ids.qr_code_label.text = "Nie ma takiego kodu"
+        else:
+            self.manager.transition.args = {'receiver_id': userId, 'registration': 'Wczytano QR'}
+            self.manager.current = 'damage'
+            self.ids.qr_code_label.text  = ""
+
+
 
 
 class ChatsScreen(Screen):
@@ -231,7 +259,7 @@ class MyApp(App):
         screen_manager = ScreenManager()
         screen_manager.add_widget(LoginScreen(auth_service, data_provider, name='login'))
         screen_manager.add_widget(MainScreen(data_provider, name='main'))
-        screen_manager.add_widget(QRScreen( name='qr'))
+        screen_manager.add_widget(QRScreen(auth_service, data_provider, name='qr'))
         screen_manager.add_widget(RegistrationScreen(auth_service, data_provider, name='registration'))
         screen_manager.add_widget(UserCodeScreen(name='user_code'))
         screen_manager.add_widget(SignUpScreen(auth_service, data_provider, name='signup'))
