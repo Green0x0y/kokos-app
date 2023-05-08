@@ -1,6 +1,10 @@
 import base64
+import smtplib
 import time
 import tempfile
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -237,6 +241,31 @@ class AddDamageScreen(Screen):
             rounded_input = self.ids.registration
             rounded_input.text = self.registration
 
+    def send_email(self, message, receiver_id):
+        email = 'kokoskivy@gmail.com'
+        password = 'gzuyzkittnadfhso'
+        smtp_server = 'smtp.gmail.com'
+        smtp_port = 587
+        receiver_email = self.db.get_user_data(receiver_id).child('email').get().val()
+        receiver_username = self.db.get_user_data(receiver_id).child('username').get().val()
+        message = receiver_username + " napisał: " + message
+        msg = MIMEMultipart()
+        msg['From'] = email
+        msg['To'] = receiver_email
+        msg['Subject'] = "Wiadomość w aplikacji KOKOS"
+        msg.attach(MIMEText(message))
+
+        try:
+            server = smtplib.SMTP(smtp_server, smtp_port)
+            server.starttls()
+            server.login(email, password)
+            text = msg.as_string()
+            server.sendmail(email, receiver_email, text)
+            server.quit()
+            print('Wiadomość została wysłana.')
+        except Exception as e:
+            print('Wystąpił błąd podczas wysyłania wiadomości: ', e)
+
     def send(self):
         message = self.ids.message.text
         if message == "":
@@ -248,7 +277,9 @@ class AddDamageScreen(Screen):
         self.ids.result.text = 'Wiadomość wysłana!'
         self.manager.transition.args = {"to" : self.receiver_id}
         self.manager.current = 'chats'
-
+        self.ids.result.text = ''
+        if self.db.get_user_data(self.receiver_id).get().val()['email'] != '':
+            self.send_email(message, self.receiver_id)
 
 
 class MyApp(App):
