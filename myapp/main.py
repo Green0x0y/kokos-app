@@ -171,8 +171,6 @@ class QRScreen(Screen):
             self.ids.qr_code_label.text  = ""
 
 
-
-
 class ChatsScreen(Screen):
     def __init__(self, auth_service, db, **kw):
         super().__init__(**kw)
@@ -187,7 +185,7 @@ class ChatsScreen(Screen):
             for key in conversations:
                 other_user = self.db.get_other_uid(self.auth.get_uid(), key)
                 if conversations[key] is not None:
-                    chat = ChatWindow(self.db, self.auth,other_user, conversations[key])
+                    chat = ChatWindow(self.db, self.auth, other_user, conversations[key])
                     chatsPanel.add_widget(chat)
         self.add_widget(chatsPanel)
 
@@ -245,7 +243,7 @@ class AddDamageScreen(Screen):
             return
         # self.manager.transition.args = {'message': message}
         # self.db.add_message(message, auth_service.user['localId'], self.receiver_id)\
-        self.db.add_conversation2(message, auth_service.user['localId'], self.receiver_id)
+        self.db.add_conversation(message, auth_service.user['localId'], self.receiver_id)
         self.ids.message.text = ''
         self.ids.result.text = 'Wiadomość wysłana!'
         self.manager.transition.args = {"to" : self.receiver_id}
