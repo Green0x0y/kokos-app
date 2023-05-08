@@ -20,7 +20,11 @@ class ChatWindow(TabbedPanelItem):
         self.auth = auth
         self.receiver = receiver
 
-        self.username = self.db.get_user_data(receiver).get().val()['username']
+        # print(receiver, self.db.get_user_data(receiver).get())
+
+        self.username = self.db.get_username(receiver)
+        # print(self.db.child("users").child(receiver).child("username").get().key())
+        # print(self.username)
 
         layout = BoxLayout(orientation='vertical', size_hint=(1, 1))
         chat_box = ChatBox(self, self.username, user_data)
@@ -56,7 +60,8 @@ class ChatBox(ScrollView):
 
         for msg in user_messages:
             msg_val = msg.val()
-            new_message = Message(parent, user + " on " + msg_val["datetime"] + " wrote: ", msg_val["message"])
+            print(msg_val, user)
+            new_message = Message(parent, user + " on " + msg_val['datetime'] + " wrote: ", msg_val['message'])
             layout.add_widget(new_message)
 
         self.add_widget(layout)

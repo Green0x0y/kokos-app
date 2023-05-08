@@ -7,7 +7,7 @@ import asyncio
 class DataProvider:
     def __init__(self, firebase: firebase, auth_service: AuthService) -> None:
         self.db = firebase.database()
-        self.current_user_data = self.db.child("users").child("a").get().val()
+        self.current_user_data = None
         self.auth_service = auth_service
 
     def get_users(self):
@@ -15,6 +15,11 @@ class DataProvider:
 
     def get_user_data(self, uid):
         return self.db.child("users").child(uid)
+    
+    def get_username(self, uid):
+        print(uid)
+        username = self.db.child("users").child(uid).get().val()['username']
+        return username
 
     
     def get_current_user_data(self):
@@ -28,7 +33,7 @@ class DataProvider:
         self.db.child("users").child(str(uid)).set(user_data)
 
     def add_conversation(self, message, sender, receiver):
-        conversationID = sender+":"+receiver
+        conversationID = self.get_conversationID(sender, receiver)
         conversations = self.db.child("users").child(sender).child("conversations").get().val()
         if conversations is None:
             conversations = {}
@@ -36,6 +41,10 @@ class DataProvider:
 
         self.db.child("users").child(sender).child("conversations").update(conversations)
         if(sender != receiver):
+            conversations = self.db.child("users").child(receiver).child("conversations").get().val()
+            if conversations is None:
+                conversations = {}
+            conversations.update({conversationID: True})
             self.db.child("users").child(receiver).child("conversations").update(conversations)
 
         self.db.child("conversations").child(conversationID).push({
@@ -70,4 +79,6 @@ class DataProvider:
     
     def get_other_uid(self, uid, conv_ID):
         other_id = conv_ID.replace(uid, "").replace(":", "")
+        if other_id == "":
+            other_id = uid
         return other_id
