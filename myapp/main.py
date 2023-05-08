@@ -228,8 +228,9 @@ class YourQrCodeScreen(Screen):
 
 
 class AddDamageScreen(Screen):
-    def __init__(self, db,  **kw):
+    def __init__(self, auth, db,  **kw):
         super().__init__(**kw)
+        self.auth = auth
         self.db = db
         self.receiver_id = None
         self.registration = None
@@ -247,8 +248,8 @@ class AddDamageScreen(Screen):
         smtp_server = 'smtp.gmail.com'
         smtp_port = 587
         receiver_email = self.db.get_user_data(receiver_id).child('email').get().val()
-        receiver_username = self.db.get_user_data(receiver_id).child('username').get().val()
-        message = receiver_username + " napisał: " + message
+        sender_username = self.db.get_user_data(self.auth.user['localId']).child('username').get().val()
+        message = sender_username + " napisał: " + message
         msg = MIMEMultipart()
         msg['From'] = email
         msg['To'] = receiver_email
@@ -296,7 +297,7 @@ class MyApp(App):
         screen_manager.add_widget(SignUpScreen(auth_service, data_provider, name='signup'))
         screen_manager.add_widget(ChatsScreen(auth_service, data_provider, name='chats'))
         screen_manager.add_widget(SettingsScreen(name='settings'))
-        screen_manager.add_widget(AddDamageScreen(data_provider, name='damage'))
+        screen_manager.add_widget(AddDamageScreen(auth_service, data_provider, name='damage'))
         screen_manager.add_widget(YourQrCodeScreen(auth_service, data_provider, name='yourqrcode'))
 
         return screen_manager
