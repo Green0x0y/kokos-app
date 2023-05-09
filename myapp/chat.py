@@ -15,14 +15,14 @@ Builder.load_file('custom_widgets/roundedbutton.kv')
 class ChatWindow(TabbedPanelItem):
     def __init__(self, db, auth,  receiver, user_data, **kwargs):
         super(ChatWindow, self).__init__(**kwargs)
-        self.text=receiver
         self.db = db
         self.auth = auth
         self.receiver = receiver
+        self.username = self.db.get_username(receiver)
+        self.text = self.username
 
         # print(receiver, self.db.get_user_data(receiver).get())
 
-        self.username = self.db.get_username(receiver)
         # print(self.db.child("users").child(receiver).child("username").get().key())
         # print(self.username)
 
@@ -61,7 +61,8 @@ class ChatBox(ScrollView):
         for msg in user_messages:
             msg_val = msg.val()
             print(msg_val, user)
-            new_message = Message(parent, user + " on " + msg_val['datetime'] + " wrote: ", msg_val['message'])
+            sender = parent.db.get_username(msg_val['from'])
+            new_message = Message(parent, sender + " on " + msg_val['datetime'] + " wrote: ", msg_val['message'])
             layout.add_widget(new_message)
 
         self.add_widget(layout)
