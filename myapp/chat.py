@@ -33,10 +33,10 @@ class ChatWindow(TabbedPanelItem):
         self.db.add_message(message, self.auth.get_uid(), self.receiver)
 
 
-    def on_touch_up(self, touch):
-        print(touch)
+    def on_press(self):
+        # print(touch)
         if self.created:
-            return super().on_touch_up(touch)
+            return
         user_data = self.db.get_conversation(self.conversation)
         layout = BoxLayout(orientation='vertical', size_hint=(1, 1))
         chat_box = ChatBox(self, self.username, user_data, self.db, self.conversation)
@@ -44,10 +44,10 @@ class ChatWindow(TabbedPanelItem):
         send_message = SendMessage()
         send_button = RoundedButton("send")
         send_button.bind(on_press=self.send_message)
-        send_input = TextInput()
-        send_input.id = "msg_to_send"
+        self.send_input = TextInput()
+        self.send_input.id = "msg_to_send"
 
-        send_message.add_widget(send_input)
+        send_message.add_widget(self.send_input)
         send_message.add_widget(send_button)
 
         layout.add_widget(chat_box)
@@ -56,7 +56,6 @@ class ChatWindow(TabbedPanelItem):
 
         self.created = True
 
-        return super().on_touch_up(touch)
 
 
 class ChatBox(ScrollView):
@@ -64,7 +63,7 @@ class ChatBox(ScrollView):
         super(ChatBox, self).__init__(**kwargs)
         self.size_hint=(1, 0.9)
         self.margin=10
-        self.parent = parent
+        self.parent5 = parent
         self.db = db 
         self.conversation = conv
 
@@ -74,7 +73,8 @@ class ChatBox(ScrollView):
         for msg in user_messages:
             msg_val = msg.val()
             print(msg_val, user)
-            new_message = Message(parent, user + " on " + msg_val['datetime'] + " wrote: ", msg_val['message'])
+            sender = parent.db.get_username(msg_val['from'])
+            new_message = Message(parent, sender + " on " + msg_val['datetime'] + " wrote: ", msg_val['message'])
             self.layout.add_widget(new_message)
 
         self.add_widget(self.layout)
@@ -83,7 +83,7 @@ class ChatBox(ScrollView):
             self.rect = Rectangle(pos=self.pos, size=self.size)
         self.bind(pos=self.update_rect, size=self.update_rect)
 
-        # self.user_data_stream = self.db.get_conversation_for_stream(self.conversation).stream(self.stream_handler)
+        self.user_data_stream = self.db.get_conversation_for_stream(self.conversation).stream(self.stream_handler)
 
     def update_rect(self, *args):
         self.rect.pos = self.pos
@@ -119,7 +119,7 @@ class MessageContent(Label):
         self.text = text
         self.size_hint_x= None
         self.color = 0, 0, 0, 1
-        self.font_size = parent.height/5
+        self.font_size = parent.parent.height/5
         self.font_name = 'Roboto-Bold.ttf'
         self.bold=True
         self.padding = (30, 100)
