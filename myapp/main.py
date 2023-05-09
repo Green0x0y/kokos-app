@@ -279,7 +279,8 @@ class AddDamageScreen(Screen):
         self.manager.transition.args = {"to" : self.receiver_id}
         self.manager.current = 'chats'
         self.ids.result.text = ''
-        if self.db.get_user_data(self.receiver_id).get().val()['email'] != '':
+        user_data = self.db.get_user_data(self.receiver_id).get()
+        if user_data is not None and user_data.val().get('email') != '':
             self.send_email(message, self.receiver_id)
 
 
