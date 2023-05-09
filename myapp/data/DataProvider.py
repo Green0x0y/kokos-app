@@ -53,14 +53,14 @@ class DataProvider:
             'datetime':   datetime.now().strftime('%d-%m-%Y %H:%M:%S'),
             'message': message
         })
+    def get_conversations_IDs(self, user: str) -> dict:
+        return self.db.child("users").child(user).child("conversations").get().val()
 
-    def get_conversations(self, user) -> dict:
-        IDs = self.db.child("users").child(user).child("conversations").get().val()
-        conversations = {}
-        if IDs is not None:
-            for id in IDs:
-                conversations.update({ id : self.db.child("conversations").child(id).get()})
-        return conversations
+    def get_conversation(self, ID: str) -> dict:
+        return self.db.child("conversations").child(ID).get()
+    
+    def get_conversation_for_stream(self, ID: str):
+        return self.db.child("conversations").child(ID)
     
     def add_message(self, message, sender, receiver):
         conversationID = self.get_conversationID(sender, receiver)
