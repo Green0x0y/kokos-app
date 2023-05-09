@@ -182,15 +182,14 @@ class ChatsScreen(Screen):
         self.db = db
 
     def on_enter(self, *args):
-        conversations = self.db.get_conversations(self.auth.get_uid())
+        conversation_IDs = self.db.get_conversations_IDs(self.auth.get_uid())
         chatsPanel = TabbedPanel(do_default_tab=False, tab_pos='left_top')
 
-        if len(conversations) != 0:
-            for key in conversations:
-                other_user = self.db.get_other_uid(self.auth.get_uid(), key)
-                if conversations[key] is not None:
-                    chat = ChatWindow(self.db, self.auth, other_user, conversations[key])
-                    chatsPanel.add_widget(chat)
+        if len(conversation_IDs) != 0:
+            for conv in conversation_IDs:
+                chat = ChatWindow(self.db, self.auth, conv)
+                chatsPanel.add_widget(chat)
+
         self.add_widget(chatsPanel)
 
 
