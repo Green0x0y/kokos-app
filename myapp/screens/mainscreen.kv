@@ -69,7 +69,14 @@
 
                 background_color: 0.1, 0.3, 0.6, 1
                 color: 1, 1, 1, 1
-
+            Button:
+                text: "Mój kod QR"
+                font_size: self.height/5
+                font_name: 'Roboto-Bold.ttf'
+                background_color: 0.1, 0.3, 0.6, 1
+                color: 1, 1, 1, 1
+                pos_hint: {'center_x': 0.5}
+                on_press: root.switch_to_my_qr_code(self)
             Button:
                 text: 'Ustawienia'
                 on_press: root.switch_to_settings_screen(self)
