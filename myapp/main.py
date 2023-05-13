@@ -6,12 +6,16 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 from kivy.app import App
+from kivy.clock import Clock
 from kivy.lang import Builder
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
 from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.graphics import Color, Rectangle
+from kivy.uix.togglebutton import ToggleButton
+
 from chat import ChatWindow
 from kivy_garden.zbarcam import ZBarCam
 from login import LoginScreen
@@ -54,6 +58,7 @@ Builder.load_file('screens/settingsscreen.kv')
 Builder.load_file('screens/adddamagescreen.kv')
 Builder.load_file('screens/yourqrcodescreen.kv')
 Builder.load_file('screens/addregistrationscreen.kv')
+Builder.load_file('screens/deleteregistrationscreen.kv')
 Window.size = (500, 700)
 
 
@@ -215,6 +220,11 @@ class SettingsScreen(Screen):
         self.manager.transition.direction = "left"
         self.manager.current = 'addregistration'
 
+    def switch_to_deleteregistration_screen(self, instance):
+        # Switch to chats screen
+        self.manager.transition.direction = "left"
+        self.manager.current = 'deleteregistration'
+
 class AddRegistrationScreen(Screen):
     def __init__(self, auth_service, db, **kw):
         super().__init__(**kw)
@@ -232,6 +242,8 @@ class AddRegistrationScreen(Screen):
         else:
             return False, ""
     def add_registration(self, instance):
+        success_label = self.ids["success_label"]
+        success_label.text = ""
         userId = self.auth.user['localId']
         new_registration = self.ids.code_input.text
         error_label = self.ids["error_label"]
@@ -242,7 +254,62 @@ class AddRegistrationScreen(Screen):
         error_label.text = error
         if not exists:
             self.db.add_registration_db(userId, new_registration)
+            success_label.text = "Pomyślnie dodano"
+            self.ids.code_input.text = ""
 
+
+class DeleteRegistrationScreen(Screen):
+    def __init__(self, auth_service, db, **kw):
+        super().__init__(**kw)
+        self.auth = auth_service
+        self.db = db
+        self.options = None
+        self.exists = False
+        self.registrations = None
+
+    def on_enter(self):
+        self.registrations = self.db.get_user_registrations(self.auth.user['localId'])
+        self.options = self.ids.options
+        layout = self.ids.options
+        print(self.registrations)
+        if self.registrations is not None:
+            self.exists = True
+            for registration in self.registrations:
+                button = ToggleButton(text=registration)
+                layout.add_widget(button)
+        elif not self.exists:
+            self.ids["success_label"].text = "Nie masz żadnych rejestracji"
+
+    def delete_selected(self):
+
+        if self.exists:
+            selected_options = []
+            for child in self.options.children:
+                if isinstance(child, ToggleButton) and child.state == 'down':
+                    selected_options.append(child.text)
+                    if len(selected_options) == len(self.registrations):
+                        self.exists = False
+                    self.db.delete_registration_db(self.auth.user['localId'], child.text)
+            print("Zaznaczone opcje:", selected_options)
+            self.ids["success_label"].text = "Pomyślnie usunięto rejestracje"
+
+            self.options.clear_widgets()
+            for registration in self.registrations:
+                button = ToggleButton(text=registration)
+                if registration not in selected_options:
+                    button.state = 'normal'
+                self.options.add_widget(button)
+            self.on_leave()
+            self.on_enter()
+
+    def refresh_page(self, dt):
+        self.manager.current = 'settings'
+        self.manager.current = 'deleteregistration'
+    def on_leave(self, *args):
+        layout = self.ids.options
+        layout.clear_widgets()
+        success_label = self.ids["success_label"]
+        success_label.text = ""
 
 class YourQrCodeScreen(Screen):
 
@@ -341,6 +408,7 @@ class MyApp(App):
         screen_manager.add_widget(AddDamageScreen(auth_service, data_provider, name='damage'))
         screen_manager.add_widget(YourQrCodeScreen(auth_service, data_provider, name='yourqrcode'))
         screen_manager.add_widget(AddRegistrationScreen(auth_service, data_provider, name='addregistration'))
+        screen_manager.add_widget(DeleteRegistrationScreen(auth_service, data_provider, name='deleteregistration'))
 
 
         return screen_manager
@@ -381,7 +449,14 @@ class MyApp(App):
                 self.root.transition.direciton = "right"
                 self.root.current = 'main'
                 return True
-
+            elif self.root.current == 'addregistration':
+                self.root.transition.direciton = "right"
+                self.root.current = 'settings'
+                return True
+            elif self.root.current == 'deleteregistration':
+                self.root.transition.direciton = "right"
+                self.root.current = 'settings'
+                return True
 
 if __name__ == '__main__':
     MyApp().run()
