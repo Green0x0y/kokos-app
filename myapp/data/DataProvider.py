@@ -31,6 +31,9 @@ class DataProvider:
         self.current_user_data = user_data
         self.db.child("users").child(str(uid)).set(user_data)
 
+    def update_username(self, uid, new_username):
+        self.db.child("users").child(uid).update({"username" : new_username})
+
     def get_user_registrations(self, uid):
         return self.db.child("users").child(uid).child("registrations").get().val()
 
