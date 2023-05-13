@@ -73,14 +73,15 @@
          pos_hint: {'center_x': 0.5} 
          on_release: root.switch_to_addregistration_screen(self)
       Button:
-         text: "Zmień rejestrację"
+         text: "Usuń rejestrację"
          font_size: self.height/6
          font_name: 'Roboto-Bold.ttf'
          size_hint_x: 0.7
          size_hint_y: 0.8
          background_color: 0.1, 0.3, 0.6, 1
          color: 1, 1, 1, 1
-         pos_hint: {'center_x': 0.5} 
+         pos_hint: {'center_x': 0.5}
+         on_release: root.switch_to_deleteregistration_screen(self)
       Button:
          text: "Zmień hasło"
          font_size: self.height/6

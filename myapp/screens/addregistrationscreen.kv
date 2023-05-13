@@ -9,7 +9,7 @@
             size: self.size
     GridLayout:
         cols: 1
-        rows:4
+        rows:5
         Image:
             source: 'data/logo.png'
 
@@ -25,6 +25,12 @@
             spacing: 0
             padding: 0, 0
             size_hint_y: 0.3
+        Label:
+            id: success_label
+            text: ""
+            spacing: 0
+            padding: 0, 0
+            size_hint_y: 0.4
 
         BoxLayout:
             size_hint_y: 2
@@ -62,3 +68,4 @@
                 background_color: 0.1, 0.3, 0.6, 1
                 color: 1, 1, 1, 1
                 pos_hint: {'center_x': 0.5}
+

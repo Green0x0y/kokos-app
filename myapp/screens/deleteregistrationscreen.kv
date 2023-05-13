@@ -1,0 +1,54 @@
+#:kivy 2.1.0
+
+<DeleteRegistrationScreen>:
+    canvas.before:
+        Color:
+            rgba: (0.4, 0.6, 1, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    GridLayout:
+        cols: 1
+        rows:6
+        Image:
+            source: 'data/logo.png'
+
+
+        Label:
+            font_size: self.height/6
+            text: 'Usuń rejestrację'
+            font_name: 'Roboto-Bold.ttf'
+        Label:
+            id: error_label
+            text: ""
+            color: 0.9, 0, 0, 1
+            spacing: 0
+            padding: 0, 0
+            size_hint_y: 0.3
+        Label:
+            id: success_label
+            text: ""
+            spacing: 0
+            padding: 0, 0
+            size_hint_y: 0.3
+
+        BoxLayout:
+            id: options
+            size_hint_y: 2
+            orientation: 'vertical'
+            padding: (self.width * 0.1, 0, self.width * 0.1, self.height*0.1)
+            spacing: self.height*0.1
+
+
+        Button:
+            text: 'Usuń wybrane'
+            id: delete_button
+            on_release: root.delete_selected()
+            font_name: 'Roboto-Bold.ttf'
+            font_size: self.height/4
+            size_hint_x: 0.6
+            size_hint_y: 0.6
+            background_color: 0.1, 0.3, 0.6, 1
+            color: 1, 1, 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            center_x: self.parent.center_x

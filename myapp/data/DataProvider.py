@@ -35,10 +35,20 @@ class DataProvider:
         return self.db.child("users").child(uid).child("registrations").get().val()
 
     def add_registration_db(self, uid,  new_registration):
-        registrations_array = self.db.child("users").child(uid).child("registrations").get().val().copy()
-        print(registrations_array)
+        registrations_array = self.db.child("users").child(uid).child("registrations").get().val()
+        if registrations_array is not None:
+            registrations_array = self.db.child("users").child(uid).child("registrations").get().val().copy()
+        else:
+            registrations_array = []
         registrations_array.append(new_registration)
         self.db.child("users").child(uid).update({"registrations": registrations_array})
+
+    def delete_registration_db(self, uid, registration_to_delete):
+        registrations_array = self.db.child("users").child(uid).child("registrations").get().val()
+        if registrations_array is not None:
+            registrations_array = self.db.child("users").child(uid).child("registrations").get().val().copy()
+            registrations_array.remove(registration_to_delete)
+            self.db.child("users").child(uid).update({"registrations": registrations_array})
 
     def add_conversation(self, message, sender, receiver):
         conversationID = self.get_conversationID(sender, receiver)
