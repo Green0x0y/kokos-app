@@ -59,6 +59,7 @@ Builder.load_file('screens/adddamagescreen.kv')
 Builder.load_file('screens/yourqrcodescreen.kv')
 Builder.load_file('screens/addregistrationscreen.kv')
 Builder.load_file('screens/deleteregistrationscreen.kv')
+Builder.load_file('screens/updateusernamescreen.kv')
 Window.size = (500, 700)
 
 
@@ -224,7 +225,30 @@ class SettingsScreen(Screen):
         # Switch to chats screen
         self.manager.transition.direction = "left"
         self.manager.current = 'deleteregistration'
+    def switch_to_updateusername_screen(self, instance):
+        self.manager.transition.direction = "left"
+        self.manager.current = 'updateusername'
 
+
+class UpdateUsernameScreen(Screen):
+    def __init__(self, auth_service, db, **kw):
+        super().__init__(**kw)
+        self.auth = auth_service
+        self.db = db
+    def on_enter(self):
+        current_username = self.ids["current_username"]
+        current_username.text = self.db.get_username(self.auth.user['localId'])
+    def update(self):
+        self.db.update_username(self.auth.user['localId'],  self.ids["code_input"].text)
+        success_label = self.ids["success_label"]
+        success_label.text = "Pomyślnie zmieniono"
+        self.on_enter()
+
+
+    def on_leave(self):
+        success_label = self.ids["success_label"]
+        success_label.text = ""
+        self.ids["code_input"].text = ""
 class AddRegistrationScreen(Screen):
     def __init__(self, auth_service, db, **kw):
         super().__init__(**kw)
@@ -241,6 +265,7 @@ class AddRegistrationScreen(Screen):
                 return True, "Taka rejestracja już istnieje"
         else:
             return False, ""
+
     def add_registration(self, instance):
         success_label = self.ids["success_label"]
         success_label.text = ""
@@ -409,6 +434,7 @@ class MyApp(App):
         screen_manager.add_widget(YourQrCodeScreen(auth_service, data_provider, name='yourqrcode'))
         screen_manager.add_widget(AddRegistrationScreen(auth_service, data_provider, name='addregistration'))
         screen_manager.add_widget(DeleteRegistrationScreen(auth_service, data_provider, name='deleteregistration'))
+        screen_manager.add_widget(UpdateUsernameScreen(auth_service, data_provider, name='updateusername'))
 
 
         return screen_manager
@@ -457,7 +483,10 @@ class MyApp(App):
                 self.root.transition.direciton = "right"
                 self.root.current = 'settings'
                 return True
-
+            elif self.root.current == 'updateusername':
+                self.root.transition.direciton = "right"
+                self.root.current = 'settings'
+                return True
 if __name__ == '__main__':
     MyApp().run()
 
