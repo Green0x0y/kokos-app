@@ -15,7 +15,7 @@ class AuthService:
 
     def login(self, email: str, password: str):
         # does not check for permission denied error
-        email = "test.kokos321@gmail.com"
+        email = "a@a.com"
         password = "Password1!"
         try:
             self.user = self.auth.sign_in_with_email_and_password(email, password)

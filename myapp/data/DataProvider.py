@@ -21,7 +21,6 @@ class DataProvider:
         username = self.db.child("users").child(uid).get().val()['username']
         return username
 
-    
     def get_current_user_data(self):
         return self.current_user_data
     
@@ -31,6 +30,15 @@ class DataProvider:
     def add_user_data(self, user_data, uid):
         self.current_user_data = user_data
         self.db.child("users").child(str(uid)).set(user_data)
+
+    def get_user_registrations(self, uid):
+        return self.db.child("users").child(uid).child("registrations").get().val()
+
+    def add_registration_db(self, uid,  new_registration):
+        registrations_array = self.db.child("users").child(uid).child("registrations").get().val().copy()
+        print(registrations_array)
+        registrations_array.append(new_registration)
+        self.db.child("users").child(uid).update({"registrations": registrations_array})
 
     def add_conversation(self, message, sender, receiver):
         conversationID = self.get_conversationID(sender, receiver)
