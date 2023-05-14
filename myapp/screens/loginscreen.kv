@@ -1,10 +1,8 @@
 <LoginScreen>:
-    canvas.before:
-        Color:
-            rgba: (0.4, 0.6, 1, 1)
-        Rectangle:
-            pos: self.pos
-            size: self.size
+    Image:
+        source: 'data/background.png'
+        allow_stretch: True
+        keep_ratio: False
 
 
     GridLayout:
@@ -38,7 +36,7 @@
                 hint_text: 'Nazwa użytkownika'
                 font_size: self.height/3
                 hint_text_color:0, 0, 0, 1
-                background_color: (0.4, 0.6, 1, 0.1)
+                background_color: (0.4, 0.6, 1, 0)
                 background_normal: ''
                 background_active: ''
                 border: (1, 1, 1, 1)
@@ -62,7 +60,7 @@
                 padding:(self.width * 0.1, self.height*0.3)
                 password: True
 
-                background_color: (0.4, 0.6, 1, 1)
+                background_color: (0.4, 0.6, 1, 0)
                 background_normal: ''
                 background_active: ''
                 border: (1, 1, 1, 1)
@@ -88,10 +86,11 @@
 
                 text: 'Zaloguj się'
                 font_name: 'Roboto-Bold.ttf'
-                font_size: self.height/3
+                font_size: self.height/2
                 size_hint_x: 0.7
                 size_hint_y: 0.8
-                background_color: 0.1, 0.3, 0.6, 1
+                background_normal: ''
+                background_color: 0.517, 0.41, 0.33, 1
                 color: 1, 1, 1, 1
                 on_press: root.login(self)
                 pos_hint: {'center_x': 0.5}
@@ -102,10 +101,9 @@
                 background_color: 0.4, 0.6, 1, 0
                 text: 'Nie mam konta'
                 font_name: 'Roboto-Bold.ttf'
-                font_size: self.height/3
+                font_size: self.height/2
                 size_hint_x: 0.7
                 size_hint_y: 0.8
-                background_color:
-                color: 1, 1, 1, 1
+                color:  0.517, 0.41, 0.33, 1
                 on_press: root.move_to_signup(self)
                 pos_hint: {'center_x': 0.5}

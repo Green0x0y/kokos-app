@@ -79,7 +79,7 @@ class ChatBox(ScrollView):
 
         self.add_widget(self.layout)
         with self.canvas.before:
-            Color(0.4, 0.6, 1, 1) # blue color
+            Color(0.913,0.893, 0.891, 1)
             self.rect = Rectangle(pos=self.pos, size=self.size)
         self.bind(pos=self.update_rect, size=self.update_rect)
 
@@ -119,7 +119,7 @@ class MessageContent(Label):
         self.text = text
         self.size_hint_x= None
         self.color = 0, 0, 0, 1
-        self.font_size = parent.parent.height/5
+        self.font_size = parent.parent.height/3
         self.font_name = 'Roboto-Bold.ttf'
         self.bold=True
         self.padding = (30, 100)
@@ -155,7 +155,7 @@ class SendMessage(BoxLayout):
         self.padding = 10
 
         with self.canvas.before:
-            Color(0.4, 0.6, 1, 1)
+            Color(0.913,0.893, 0.891, 1)
             self.rect = Rectangle(size=self.size, pos=self.pos)
 
 
