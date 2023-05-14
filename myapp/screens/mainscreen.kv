@@ -5,32 +5,23 @@
         cols: 1
         rows: 5
         canvas:
-            Color:
-                rgba: 0.4, 0.6, 1, 1
             Rectangle:
+                source: 'data/main_background.png'
                 pos: self.pos
                 size: self.size
         BoxLayout:
             orientation: 'vertical'
             size_hint_y: 2
 
-
-            canvas:
-                Color:
-                    rgba: 1, 1, 1, 1
-                RoundedRectangle:
-                    pos: self.pos
-                    size: self.size
-                    radius: [0, 0, 100, 100]
             Label:
                 text: "KOKOS"
-                color: 0.4, 0.6, 1, 1
+                color:  1, 1, 1, 1
                 font_size: self.height/2
                 font_name: 'Roboto-Bold.ttf'
             Label:
                 id: username
                 text: "Cześć"
-                color: 0.4, 0.6, 1, 1
+                color:  1, 1, 1, 1
                 font_size: self.height/4
 
 
@@ -46,40 +37,43 @@
                 font_size: '30sp'
                 id: scan_code_button
                 font_name: 'Roboto-Bold.ttf'
-                font_size: self.height/5
-                background_color: 0.1, 0.3, 0.6, 1
-                color: 1, 1, 1, 1
+                font_size: self.height/3
+                background_normal: ''
+                background_color:  1,1,1,1
+                color: 0.517, 0.41, 0.33, 1
 
 
             Button:
                 text: 'Wyszukaj po rejestracji'
                 on_press: root.switch_to_registration_screen(self)
                 font_name: 'Roboto-Bold.ttf'
-                font_size: self.height/5
-                background_color: 0.1, 0.3, 0.6, 1
-                color: 1, 1, 1, 1
+                font_size: self.height/3
+                background_normal: ''
+                background_color:  1,1,1,1
+                color: 0.517, 0.41, 0.33, 1
 
             Button:
                 text: 'Moje czaty'
                 on_press: root.switch_to_chats_screen(self)
                 font_name: 'Roboto-Bold.ttf'
-                font_size: self.height/5
-
-                background_color: 0.1, 0.3, 0.6, 1
-                color: 1, 1, 1, 1
+                font_size: self.height/3
+                background_normal: ''
+                background_color:  1,1,1,1
+                color: 0.517, 0.41, 0.33, 1
             Button:
                 text: "Mój kod QR"
-                font_size: self.height/5
+                font_size: self.height/3
                 font_name: 'Roboto-Bold.ttf'
-                background_color: 0.1, 0.3, 0.6, 1
-                color: 1, 1, 1, 1
+                background_normal: ''
+                background_color:  1,1,1,1
+                color: 0.517, 0.41, 0.33, 1
                 pos_hint: {'center_x': 0.5}
                 on_press: root.switch_to_my_qr_code(self)
             Button:
                 text: 'Ustawienia'
                 on_press: root.switch_to_settings_screen(self)
                 font_name: 'Roboto-Bold.ttf'
-                font_size: self.height/5
-
-                background_color: 0.1, 0.3, 0.6, 1
-                color: 1, 1, 1, 1
+                font_size: self.height/3
+                background_normal: ''
+                background_color:  1,1,1,1
+                color: 0.517, 0.41, 0.33, 1

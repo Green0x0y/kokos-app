@@ -2,14 +2,13 @@
 
 <AddDamageScreen>:
     canvas.before:
-        Color:
-            rgba: (0.4, 0.6, 1, 1)
         Rectangle:
+            source: 'data/background.png'
             pos: self.pos
             size: self.size
     BoxLayout:
         size_hint: (1,1)
-
+        padding: (self.width * 0.1, self.height*0.05, self.width * 0.1, self.height*0.1)
         orientation: 'vertical'
         Label:
             text: 'Napisz do właściciela'
@@ -17,26 +16,26 @@
             font_name: 'Roboto-Bold.ttf'
             pos_hint: {'center_x': 0.5}
         Label:
-            font_size: root.height/20
+            font_size: root.height/25
             font_name: 'Roboto-Bold.ttf'
             text: 'Numer rejestracji'
             pos_hint: {'center_x': 0.5}
         Label:
             id: registration
             text: 'ok'
-            font_size: root.height/20
+            font_size: root.height/25
             pos_hint: {'center_x': 0.5}
         #Label:
         #    text: 'Rodzaj Szkody'
-        #    font_size: root.height/20
+        #    font_size: root.height/15
         #    font_name: 'Roboto-Bold.ttf'
         #    pos_hint: {'center_x': 0.5}
         #RoundedInput:
         #    text: 'ok'
         #    pos_hint: {'center_x': 0.5}
         Label:
-            text: 'Wiadomość'
-            font_size: root.height/20
+            #text: 'Wiadomość'
+            font_size: root.height/15
             font_name: 'Roboto-Bold.ttf'
             pos_hint: {'center_x': 0.5}
         RoundedInput:
@@ -50,9 +49,14 @@
             height: root.height/10
             font_size: root.height/20
             text: ''
-        RoundedButton:
+
+        Button:
             text: 'Wyślij'
             pos_hint: {'center_x': 0.5}
             on_press: root.send()
-
+            font_name: 'Roboto-Bold.ttf'
+            font_size: root.height/30
+            background_normal: ''
+            background_color:  1,1,1,1
+            color: 0.517, 0.41, 0.33, 1
 

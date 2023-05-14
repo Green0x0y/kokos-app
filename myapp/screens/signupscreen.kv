@@ -1,11 +1,9 @@
 #:kivy 2.1.0
 <SignUpScreen>:
-    canvas.before:
-        Color:
-            rgba: (0.4, 0.6, 1, 1)
-        Rectangle:
-            pos: self.pos
-            size: self.size
+    Image:
+        source: 'data/background.png'
+        allow_stretch: True
+        keep_ratio: False
     GridLayout:
 
         cols: 1
@@ -35,10 +33,10 @@
             TextInput:
                 id: username_input
                 hint_text: 'Nazwa użytkownika'
-                font_size: self.height/3
+                font_size: self.height/2.5
                 padding: (self.width * 0.1, self.height*0.3)
                 hint_text_color:0, 0, 0, 1
-                background_color: (0.4, 0.6, 1, 0.1)
+                background_color: (0.4, 0.6, 1, 0)
                 background_normal: ''
                 background_active: ''
                 border: (1, 1, 1, 1)
@@ -55,10 +53,10 @@
             TextInput:
                 id: email_input
                 hint_text: 'Email'
-                font_size: self.height/3
+                font_size: self.height/2.5
                 padding: (self.width * 0.1, self.height*0.3)
                 hint_text_color:0, 0, 0, 1
-                background_color: (0.4, 0.6, 1, 0.1)
+                background_color: (0.4, 0.6, 1, 0)
                 background_normal: ''
                 background_active: ''
                 border: (1, 1, 1, 1)
@@ -76,11 +74,11 @@
             TextInput:
                 id: password_input
                 hint_text: 'Hasło'
-                font_size: self.height/3
+                font_size: self.height/2.5
                 padding: (self.width * 0.1, self.height*0.3)
                 password: True
 
-                background_color: (0.4, 0.6, 1, 1)
+                background_color: (0.4, 0.6, 1, 0)
                 background_normal: ''
                 background_active: ''
                 border: (1, 1, 1, 1)
@@ -100,11 +98,11 @@
             TextInput:
                 id: password_input_2
                 hint_text: 'Powtórz hasło'
-                font_size: self.height/3
+                font_size: self.height/2.5
                 padding: (self.width * 0.1, self.height*0.3)
                 password: True
 
-                background_color: (0.4, 0.6, 1, 1)
+                background_color: (0.4, 0.6, 1, 0)
                 background_normal: ''
                 background_active: ''
                 border: (1, 1, 1, 1)
@@ -130,8 +128,9 @@
                 text: 'Zarejestruj się'
                 font_name: 'Roboto-Bold.ttf'
                 size_hint_x:0.7
-                font_size: self.height/3
-                background_color: 0.1, 0.3, 0.6, 1
+                font_size: self.height/2
+                background_normal: ''
+                background_color: 0.517, 0.41, 0.33, 1
                 color: 1, 1, 1, 1
                 pos_hint: {'center_x': 0.5}
                 on_press: root.add_user(self)
@@ -139,11 +138,11 @@
                 background_color: 0.4, 0.6, 1, 0
                 text: 'Mam już konto'
                 font_name: 'Roboto-Bold.ttf'
-                font_size: self.height/3
+                font_size: self.height/2
                 size_hint_x: 0.7
                 size_hint_y: 0.8
                 background_color:
-                color: 1, 1, 1, 1
+                color:  0.517, 0.41, 0.33, 1
                 on_press: root.switch_to_login_screen(self)
                 pos_hint: {'center_x': 0.5}
 
