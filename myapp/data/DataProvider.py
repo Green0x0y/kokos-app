@@ -17,9 +17,8 @@ class DataProvider:
         return self.db.child("users").child(uid)
     
     def get_username(self, uid):
-        print(uid)
-        username = self.db.child("users").child(uid).get().val()['username']
-        return username
+        return self.db.child("users").child(uid).get().val()['username']
+
 
     def get_current_user_data(self):
         return self.current_user_data
@@ -83,10 +82,10 @@ class DataProvider:
     def get_conversation_for_stream(self, ID: str):
         return self.db.child("conversations").child(ID)
     
-    def add_message(self, message, sender, receiver):
+    def add_message(self, message, sender, receiver, sender_nick):
         conversationID = self.get_conversationID(sender, receiver)
         self.db.child("conversations").child(conversationID).push({
-            'from' : sender,
+            'from' : sender_nick,
             'to' : receiver,
             'datetime':   datetime.now().strftime('%d-%m-%Y %H:%M:%S'),
             'message': message

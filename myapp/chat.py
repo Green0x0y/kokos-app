@@ -5,11 +5,14 @@ from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.uix.scrollview import ScrollView
 from kivy.graphics import Color, Rectangle, RoundedRectangle
-from kivy.uix.tabbedpanel import TabbedPanelItem, TabbedPanel
+from kivy.uix.tabbedpanel import TabbedPanelItem, TabbedPanel, TabbedPanelHeader, TabbedPanelContent
 from kivy.core.window import Window
 from kivy.lang import Builder
 from data.DataProvider import DataProvider
 from data.AuthService import AuthService
+from kivy.clock import Clock
+from threading import Thread
+from functools import partial
 
 Builder.load_file('custom_widgets/roundedinput.kv')
 Builder.load_file('custom_widgets/roundedbutton.kv')
@@ -26,12 +29,24 @@ class ChatWindow(TabbedPanelItem):
         self.created = False
         self.username = self.db.get_username(self.receiver)
         self.text = self.username
+        # self.text_size = None,  self.width/5
+        self.font_size = self.width/6
+        self.color = 133/255, 106/255, 85/255, 1
+        self.background_color = 223/255, 223/255, 213/255, 1
+        self.background_normal = ''
+        self.background_down = ''
+        self.bind(state=self.update_active_tab)
 
 
     def send_message(self, instance):
         message = self.send_input.text
-        self.db.add_message(message, self.auth.get_uid(), self.receiver)
+        self.db.add_message(message, self.auth.get_uid(), self.receiver, self.db.current_user_data['username'])
 
+    def update_active_tab(self, header, state):
+        if state == 'down':
+            header.background_color = 106/255, 231/255, 75/255, 1
+        else:
+            header.background_color = 223/255, 223/255, 213/255, 1
 
     def on_press(self):
         # print(touch)
@@ -55,7 +70,7 @@ class ChatWindow(TabbedPanelItem):
         self.add_widget(layout)
 
         self.created = True
-
+    
 
 
 class ChatBox(ScrollView):
@@ -63,19 +78,12 @@ class ChatBox(ScrollView):
         super(ChatBox, self).__init__(**kwargs)
         self.size_hint=(1, 0.9)
         self.margin=10
-        self.parent5 = parent
+        self.parent_xd = parent
         self.db = db 
         self.conversation = conv
 
         self.layout = GridLayout(cols=1, spacing=10, size_hint_y=None)
         self.layout.bind(minimum_height=self.layout.setter('height'))
-
-        for msg in user_messages:
-            msg_val = msg.val()
-            print(msg_val, user)
-            sender = parent.db.get_username(msg_val['from'])
-            new_message = Message(parent, sender + " on " + msg_val['datetime'] + " wrote: ", msg_val['message'])
-            self.layout.add_widget(new_message)
 
         self.add_widget(self.layout)
         with self.canvas.before:
@@ -89,16 +97,16 @@ class ChatBox(ScrollView):
         self.rect.pos = self.pos
         self.rect.size = self.size
 
-    def stream_handler(self, msg):
-        print("msg:", msg['data'])
-        # msg_val = msg['data'][self.bar_margin]
-        # user = msg['data'].key()
-        # print(msg_val, user)
-        # new_message = Message(self.parent, user + " on " + msg_val['datetime'] + " wrote: ", msg_val['message'])
-        # self.layout.add_widget(new_message)
-        # print(message["event"]) # put
-        # print(message["path"]) # /-K7yGTTEp7O549EzTYtI
-        # print(message["data"]) # {'title': 'Firebase', "body": "etc..."}
+    def stream_handler(self, message):
+        if message['path'] == '/':
+            for msg in message['data'].values():
+                Clock.schedule_once(partial(self.add_msg_callback, msg), 0)
+        else:
+            Clock.schedule_once(partial(self.add_msg_callback, message['data']), 0)
+
+    def add_msg_callback(self, msg, *largs):
+        new_message = Message(self.parent_xd, msg['from'] + " on " + msg['datetime'] + " wrote: ", msg['message'])
+        self.layout.add_widget(new_message)
 
 class Message(BoxLayout):
     def __init__(self, parent, text, msg, **kwargs):
@@ -162,6 +170,10 @@ class SendMessage(BoxLayout):
     def on_size(self, *args):
         self.rect.size = self.size
         self.rect.pos = self.pos
+
+class ChatHeader(TabbedPanelHeader):
+    def __init__(self) -> None:
+        pass
 
 class RoundedButton(Button):
     def __init__(self, text, **kwargs):
