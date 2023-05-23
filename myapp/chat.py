@@ -1,5 +1,6 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
@@ -13,6 +14,7 @@ from data.AuthService import AuthService
 from kivy.clock import Clock
 from threading import Thread
 from functools import partial
+from kivy.modules import inspector
 
 Builder.load_file('custom_widgets/roundedinput.kv')
 Builder.load_file('custom_widgets/roundedbutton.kv')
@@ -36,11 +38,13 @@ class ChatWindow(TabbedPanelItem):
         self.background_normal = ''
         self.background_down = ''
         self.bind(state=self.update_active_tab)
+        inspector.create_inspector(Window, self)
 
 
     def send_message(self, instance):
         message = self.send_input.text
         self.db.add_message(message, self.auth.get_uid(), self.receiver, self.db.current_user_data['username'])
+        self.send_input.text = ""
 
     def update_active_tab(self, header, state):
         if state == 'down':
@@ -105,37 +109,44 @@ class ChatBox(ScrollView):
             Clock.schedule_once(partial(self.add_msg_callback, message['data']), 0)
 
     def add_msg_callback(self, msg, *largs):
-        new_message = Message(self.parent_xd, msg['from'] + " on " + msg['datetime'] + " wrote: ", msg['message'])
+        new_message = Message(self.parent_xd, msg['from'] + " on " + msg['datetime'] + " wrote: ", msg['message'], msg['from'])
         self.layout.add_widget(new_message)
 
 class Message(BoxLayout):
-    def __init__(self, parent, text, msg, **kwargs):
+    def __init__(self, parent, text, msg, sender, **kwargs):
         super(Message, self).__init__(**kwargs)
 
         self.orientation='vertical'
         self.spacing = 5
+        self.width = parent.width
         self.padding = [10, 10]
         self.size_hint_y = None
-        self.add_widget(MessageLabel(text))
-        label = MessageContent(parent, msg)
-
-        self.add_widget(label)
+        print(sender, parent.username)
+        if sender != parent.username:
+            msg_label = MessageLabel(self, text, pos_hint={'right': 1})
+            msg_content = MessageContent(parent, msg, bg_color=(0, 1, 0, 1), pos_hint={'right': 1})
+        else:
+            msg_label = MessageLabel(self, text, pos_hint={'left': 1})
+            msg_content = MessageContent(parent, msg, bg_color=(0, 0, 0, 1), pos_hint={'left': 1})
+        self.add_widget(msg_label)
+        self.add_widget(msg_content)
 
 class MessageContent(Label):
-    def __init__(self, parent, text, **kwargs):
+    def __init__(self, parent, text, bg_color, **kwargs):
         super(MessageContent, self).__init__(**kwargs)
         self.text = text
         self.size_hint_x= None
-        self.color = 0, 0, 0, 1
         self.font_size = parent.parent.height/3
         self.font_name = 'Roboto-Bold.ttf'
+        self.color = 0, 0, 0, 1
         self.bold=True
         self.padding = (30, 100)
         self.texture_update()
         self.width = self.texture_size[0]
+        self.halign = 'right'
 
         with self.canvas.before:
-            Color(1, 1, 1, 1) # white
+            Color(*bg_color)
             self.rect = RoundedRectangle(pos=self.pos, size=self.size, radius=[20])
         self.bind(pos=self.update_rect, size=self.update_rect)
 
@@ -144,10 +155,10 @@ class MessageContent(Label):
         self.rect.size = self.size
 
 class MessageLabel(Label):
-    def __init__(self, text, **kwargs):
+    def __init__(self, parent, text, **kwargs):
         super(MessageLabel, self).__init__(**kwargs)
         self.text = text
-        self.size_hint_x= None
+        self.size_hint_x = None
         self.color = 0.2, 0.2, 0.2, 0.7
         self.font_name = 'Roboto-Bold.ttf'
         self.texture_update()
@@ -166,14 +177,9 @@ class SendMessage(BoxLayout):
             Color(0.913,0.893, 0.891, 1)
             self.rect = Rectangle(size=self.size, pos=self.pos)
 
-
     def on_size(self, *args):
         self.rect.size = self.size
         self.rect.pos = self.pos
-
-class ChatHeader(TabbedPanelHeader):
-    def __init__(self) -> None:
-        pass
 
 class RoundedButton(Button):
     def __init__(self, text, **kwargs):
