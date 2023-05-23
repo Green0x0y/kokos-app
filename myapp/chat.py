@@ -1,6 +1,6 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.stacklayout import StackLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
@@ -109,11 +109,11 @@ class ChatBox(ScrollView):
             Clock.schedule_once(partial(self.add_msg_callback, message['data']), 0)
 
     def add_msg_callback(self, msg, *largs):
-        new_message = Message(self.parent_xd, msg['from'] + " on " + msg['datetime'] + " wrote: ", msg['message'], msg['from'])
+        new_message = Message(self.parent_xd, msg['from'] + " on " + msg['datetime'] + " wrote: ", msg['message'], msg['to'])
         self.layout.add_widget(new_message)
 
 class Message(BoxLayout):
-    def __init__(self, parent, text, msg, sender, **kwargs):
+    def __init__(self, parent, text, msg, receiver, **kwargs):
         super(Message, self).__init__(**kwargs)
 
         self.orientation='vertical'
@@ -121,15 +121,20 @@ class Message(BoxLayout):
         self.width = parent.width
         self.padding = [10, 10]
         self.size_hint_y = None
-        print(sender, parent.username)
-        if sender != parent.username:
+        print(receiver, parent.user)
+        if receiver != parent.user:
             msg_label = MessageLabel(self, text, pos_hint={'right': 1})
-            msg_content = MessageContent(parent, msg, bg_color=(0, 1, 0, 1), pos_hint={'right': 1})
+            msg_box = StackLayout(orientation='rl-tb')
+            msg_content = MessageContent(parent, msg, bg_color=(0, 1, 0, 1))
+            msg_del = Button(text="del", width=20,size_hint=(0.2, 1))
+            msg_box.add_widget(msg_content)
+            msg_box.add_widget(msg_del)
         else:
             msg_label = MessageLabel(self, text, pos_hint={'left': 1})
-            msg_content = MessageContent(parent, msg, bg_color=(0, 0, 0, 1), pos_hint={'left': 1})
+            msg_box = MessageContent(parent, msg, bg_color=(1, 1, 1, 1), pos_hint={'left': 1})
         self.add_widget(msg_label)
-        self.add_widget(msg_content)
+        self.add_widget(msg_box)
+        # if receiver != parent.user: self.add_widget(msg_del)
 
 class MessageContent(Label):
     def __init__(self, parent, text, bg_color, **kwargs):
@@ -140,19 +145,30 @@ class MessageContent(Label):
         self.font_name = 'Roboto-Bold.ttf'
         self.color = 0, 0, 0, 1
         self.bold=True
-        self.padding = (30, 100)
+        self.padding = (30, 10)
         self.texture_update()
-        self.width = self.texture_size[0]
-        self.halign = 'right'
+        # print(self.texture_size[0], Window.width, text)
+        if self.texture_size[0] > Window.width:
+            self.width = Window.width
+            self.text_size = (Window.width*0.8, None)
+        else:
+            self.width = self.texture_size[0]
+
+        self.halign = 'left'
 
         with self.canvas.before:
             Color(*bg_color)
+            print("self.size:", self.size)
             self.rect = RoundedRectangle(pos=self.pos, size=self.size, radius=[20])
         self.bind(pos=self.update_rect, size=self.update_rect)
 
     def update_rect(self, *args):
+        print("size calling rect", self.size)
         self.rect.pos = self.pos
-        self.rect.size = self.size
+        self.texture_update()
+        self.rect.size = self.texture_size
+        # return self.texture_size
+        print("size calling rect after texture update", self.size, self.texture_size)
 
 class MessageLabel(Label):
     def __init__(self, parent, text, **kwargs):

@@ -91,6 +91,9 @@ class DataProvider:
             'message': message
         })
 
+    def delete_message(self, msg_id, conversation):
+        print("deleting msg", msg_id, conversation)
+
     def get_conversationID(self, sender, receiver):
         if sender > receiver:
             return sender + ":" + receiver

@@ -15,6 +15,7 @@ from kivy.core.window import Window
 from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.graphics import Color, Rectangle
 from kivy.uix.togglebutton import ToggleButton
+from requests.exceptions import HTTPError
 
 from chat import ChatWindow
 from kivy_garden.zbarcam import ZBarCam
@@ -53,13 +54,14 @@ Builder.load_file('screens/mainscreen.kv')
 Builder.load_file('screens/usercodescreen.kv')  
 Builder.load_file('screens/registrationscreen.kv')
 Builder.load_file('screens/signupscreen.kv')
-# Builder.load_file('screens/qrscreen.kv')
+Builder.load_file('screens/qrscreen.kv')
 Builder.load_file('screens/settingsscreen.kv')
 Builder.load_file('screens/adddamagescreen.kv')
 Builder.load_file('screens/yourqrcodescreen.kv')
 Builder.load_file('screens/addregistrationscreen.kv')
 Builder.load_file('screens/deleteregistrationscreen.kv')
 Builder.load_file('screens/updateusernamescreen.kv')
+Builder.load_file('screens/forgotpasswordscreen.kv')
 Window.size = (500, 700)
 
 
@@ -101,6 +103,20 @@ class MainScreen(Screen):
         if auth_service.user is None:
             label.text = " unresgistered"
         label.text = "Cześć " + data_provider.get_current_user_data()['username'] + "!"
+
+class ForgotPasswordScreen(Screen):
+    def __init__(self, auth_service: AuthService, **kw):
+        self.auth = auth_service
+        super().__init__(**kw)
+
+    def send_passwd_reset(self, instance):
+        email = self.ids.reset_email_input.text
+        try:
+            self.auth.reset_password(email)
+            self.manager.current = 'login'
+        except HTTPError as e:
+            self.ids.error_label.text = "invalid email"
+        
 
 class UserCodeScreen(Screen):
     def verify_code(self, instance):
@@ -208,7 +224,7 @@ class ChatsScreen(Screen):
             chatsPanel.rect = Rectangle(pos=chatsPanel.pos, size=chatsPanel.size)
         chatsPanel.bind(pos=update_rect, size=update_rect)
 
-        if len(conversation_IDs) != 0:
+        if conversation_IDs is not None and len(conversation_IDs) != 0:
             first_tab = True
             for conv in conversation_IDs:
                 chat = ChatWindow(self.db, self.auth, conv)
@@ -221,7 +237,6 @@ class ChatsScreen(Screen):
         self.add_widget(chatsPanel)
         self.initiated = True
 
-
 class SettingsScreen(Screen):
     def __init__(self, auth_service, db, **kw):
         super().__init__(**kw)
@@ -230,9 +245,9 @@ class SettingsScreen(Screen):
 
     def switch_click(self, switchObject, switchValue):
         if (switchValue):
-            self.ids.mail_label.text = "Powiadomienia mailowe włączone"
+            self.ids.mail_label.text = "Powiadomienia mailowe on"
         else:
-            self.ids.mail_label.text = "Powiadomienia mailowe wyłączone"
+            self.ids.mail_label.text = "Powiadomienia mailowe off"
 
     def switch_to_addregistration_screen(self, instance):
         # Switch to chats screen
@@ -453,6 +468,7 @@ class MyApp(App):
         screen_manager.add_widget(AddRegistrationScreen(auth_service, data_provider, name='addregistration'))
         screen_manager.add_widget(DeleteRegistrationScreen(auth_service, data_provider, name='deleteregistration'))
         screen_manager.add_widget(UpdateUsernameScreen(auth_service, data_provider, name='updateusername'))
+        screen_manager.add_widget(ForgotPasswordScreen(auth_service, name='forgot_password'))
 
 
         return screen_manager

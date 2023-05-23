@@ -37,7 +37,8 @@ class SignUpScreen(Screen):
                     },
                     'username': username_input,
                     'qr_code': email_hash,
-                    'registrations': {}
+                    'registrations': {},
+                    'email': email_input
                 })
                 self.db.add_user_data(user_data, uid)
                 self.manager.current ='main';
