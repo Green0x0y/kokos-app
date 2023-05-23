@@ -15,8 +15,6 @@ class AuthService:
 
     def login(self, email: str, password: str):
         # does not check for permission denied error
-        email = "b@b.com"
-        password = "Password1!"
         try:
             self.user = self.auth.sign_in_with_email_and_password(email, password)
             print('Successfully signed in user:', self.user['localId'])
@@ -84,6 +82,7 @@ class AuthService:
             return True, ""
         else:
             return False, "Niepoprawny adres email"
-
-    
+        
+    def reset_password(self, email: str):
+        self.auth.send_password_reset_email(email)
 
