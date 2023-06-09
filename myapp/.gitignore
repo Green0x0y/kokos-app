@@ -1,3 +1,6 @@
 __pycache__
 .buildozer
 bin
+kokos-venv
+venv
+data
