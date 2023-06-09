@@ -6,18 +6,54 @@ from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.uix.scrollview import ScrollView
 from kivy.graphics import Color, Rectangle, RoundedRectangle
-from kivy.uix.tabbedpanel import TabbedPanelItem, TabbedPanel, TabbedPanelHeader, TabbedPanelContent
+from kivy.uix.tabbedpanel import TabbedPanelItem, TabbedPanel
 from kivy.core.window import Window
 from kivy.lang import Builder
+from kivy.uix.screenmanager import Screen
 from data.DataProvider import DataProvider
 from data.AuthService import AuthService
 from kivy.clock import Clock
-from threading import Thread
 from functools import partial
 from kivy.modules import inspector
 
-Builder.load_file('custom_widgets/roundedinput.kv')
-Builder.load_file('custom_widgets/roundedbutton.kv')
+Builder.load_file('GUI/custom_widgets/roundedinput.kv')
+Builder.load_file('GUI/custom_widgets/roundedbutton.kv')
+
+
+class ChatsScreen(Screen):
+    def __init__(self, auth_service, db, **kw):
+        super().__init__(**kw)
+        self.auth = auth_service
+        self.db = db
+        self.initiated = False
+# to jest zdecydowanie do zrefactorowania, ale for now działa
+    def on_enter(self, *args):
+
+        def update_rect(self, *args):
+            self.rect.pos = self.pos
+            self.rect.size = self.size
+        
+        if self.initiated: return
+        conversation_IDs = self.db.get_conversations_IDs(self.auth.get_uid())
+        chatsPanel = TabbedPanel(do_default_tab=False, tab_pos='left_mid')
+
+        with chatsPanel.canvas.before:
+            Color(133/255, 106/255, 85/255, 1) # brown
+            chatsPanel.rect = Rectangle(pos=chatsPanel.pos, size=chatsPanel.size)
+        chatsPanel.bind(pos=update_rect, size=update_rect)
+
+        if conversation_IDs is not None and len(conversation_IDs) != 0:
+            first_tab = True
+            for conv in conversation_IDs:
+                chat = ChatWindow(self.db, self.auth, conv)
+                chatsPanel.add_widget(chat)
+                if first_tab:
+                    chat.on_press()
+                    chatsPanel.set_def_tab = chat
+                    first_tab = False
+
+        self.add_widget(chatsPanel)
+        self.initiated = True
 
 
 class ChatWindow(TabbedPanelItem):
