@@ -1,0 +1,16 @@
+#:kivy 2.1.0
+
+<ChatBox@ScrollView>:
+    size_hint: (1, 0.9)
+    margin: 10
+    canvas.before:
+        Color:
+            rgba: (0.913,0.893, 0.891, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    GridLayout:
+        id: messages
+        cols: 1
+        spacing: 10
+        size_hint_y: None
