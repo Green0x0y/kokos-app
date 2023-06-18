@@ -12,7 +12,7 @@ from kivy_garden.zbarcam import ZBarCam
 
 from screens.adddamage import AddDamageScreen
 from screens.addregistration import AddRegistrationScreen
-from screens.chat import ChatsScreen
+from screens.chat import ChatScreen
 from screens.deleteregistration import DeleteRegistrationScreen
 from screens.forgotpassword import ForgotPasswordScreen
 from screens.login import LoginScreen
@@ -52,6 +52,7 @@ Builder.load_file('screens/addregistrationscreen.kv')
 Builder.load_file('screens/deleteregistrationscreen.kv')
 Builder.load_file('screens/updateusernamescreen.kv')
 Builder.load_file('screens/forgotpasswordscreen.kv')
+Builder.load_file('screens/chatscreen.kv')
 Window.size = (500, 700)
 
 
@@ -63,7 +64,7 @@ class MyApp(App):
                    RegistrationScreen(auth_service, data_provider, name='registration'),
                    UserCodeScreen(name='user_code'),
                    SignUpScreen(auth_service, data_provider, name='signup'),
-                   ChatsScreen(auth_service, data_provider, name='chats'),
+                   ChatScreen(auth_service, data_provider, name='chats'),
                    SettingsScreen(auth_service, data_provider, name='settings'),
                    AddDamageScreen(auth_service, data_provider, name='damage'),
                    YourQrCodeScreen(auth_service, data_provider, name='yourqrcode'),

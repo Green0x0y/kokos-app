@@ -1,0 +1,18 @@
+#:kivy 2.1.0
+
+<ChatScreen>:
+
+    TabbedPanel:
+        id: chats_panel
+        do_default_tab: False
+        tab_pos: 'left_mid'
+        canvas.before:
+            Color:
+                rgba: (133/255, 106/255, 85/255, 1) # brown
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                
+        
+        
+    

@@ -1,0 +1,20 @@
+#:kivy 2.1.0
+
+<SendArea@BoxLayout>:
+    orientation: 'horizontal'
+    size_hint: (1, 0.1)
+    spacing: 30
+    padding: 10
+    canvas.before:
+        Color:
+            rgba: (0.913,0.893, 0.891, 1)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    RoundedInput:
+        id: input
+        
+    RoundedButton:
+        id: send
+        size_hint: (0.2, 1)
+        text: "send"
