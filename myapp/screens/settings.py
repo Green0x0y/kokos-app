@@ -9,8 +9,10 @@ class SettingsScreen(Screen):
     def switch_click(self, switchObject, switchValue):
         if (switchValue):
             self.ids.mail_label.text = "Powiadomienia mailowe on"
+            self.db.email_notifications_on(self.auth.user['localId'])
         else:
             self.ids.mail_label.text = "Powiadomienia mailowe off"
+            self.db.email_notifications_off(self.auth.user['localId'])
 
     def switch_to_addregistration_screen(self, instance):
         # Switch to chats screen
