@@ -1,17 +1,23 @@
 <RoundedInput@TextInput>:
-    font_size: self.height/5
-    size_hint: 1 , 1
-    background_color: (0.4, 0.6, 1, 0)
-    background_normal: ''
-    background_active: ''
-    border: (1, 1, 1, 1)
-    #padding:(self.width * 0.1, self.height*0.3)
+    font_size: self.height/3
+    multiline: False
+    size_hint: (1 , 1)
+    hint_text_color: [0.5, 0.5, 0.5, 0.5]
+    color: [0, 0, 0, 1]
+    background_color: [0, 0, 0, 0]
+    background_image: ""
+    background_normal: ""
+    background_active: ""
+    cursor_color: [0, 0, 0, 1]
+    padding_x: self.width/10
+    padding_y: (self.height - self.line_height)/2 - 1 
+    cursor_width: 2
     canvas.before:
         Color:
-            rgba: (1, 1, 1, 1)
+            rgba: (1, 1, 1, 0.8)
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [40,]
+            radius: [20,]
         Color:
-            rgba: (0.5, 0.5, 0.5, 1)
+            rgba: (0.3, 0.3, 0.3, 1)

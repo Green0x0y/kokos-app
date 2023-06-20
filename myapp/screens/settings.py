@@ -21,6 +21,8 @@ class SettingsScreen(Screen):
         # Switch to chats screen
         self.manager.transition.direction = "left"
         self.manager.current = 'deleteregistration'
+
     def switch_to_updateusername_screen(self, instance):
         self.manager.transition.direction = "left"
         self.manager.current = 'updateusername'
+    
