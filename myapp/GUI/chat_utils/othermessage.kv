@@ -2,9 +2,9 @@
 
 <OtherMessage@BoxLayout>:
     orientation: 'vertical'
+    size_hint: 0.7, None
     spacing: 5
     padding: (10, 10)
-    size_hint_y: None
     # message label
     Label:
         id: label
@@ -13,14 +13,9 @@
         font_name: 'Roboto-Bold.ttf'
         width: self.texture_size[0]
 #  msg_box
-    Label:
+    Message:
         id: content
-        size_hint_x: None
-        font_size: 10
-        font_name: 'Roboto-Bold.ttf'
-        color: (0, 0, 0, 1)
-        bold: True
-        padding: 30, 10
+        size_hint: 0.7, None
         canvas.before:
             Color: 
                 rgba: (1, 1, 1, 1)

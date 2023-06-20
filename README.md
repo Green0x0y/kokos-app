@@ -8,8 +8,9 @@ If another user wants to contact him, for example to inform him that the
 lights of his car are still on,
 he can scan the QR code and send a message directly to the car owner.
 
-![image](https://user-images.githubusercontent.com/66325429/226621727-45d78af2-34ed-47eb-89b4-ddc0a81dc80d.png)
 
+![image](https://github.com/Green0x0y/Kokos_App/assets/66325429/b0a12367-4871-4d26-b49a-6ca093200337)
+![image](https://github.com/Green0x0y/Kokos_App/assets/66325429/304bf213-7306-4cf7-8679-fe44c843bbb4)
 
 ## Technologies Used
 - Python 3.10

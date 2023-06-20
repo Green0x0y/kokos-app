@@ -40,6 +40,7 @@ class SignUpScreen(Screen):
                     'registrations': {},
                     'email': email_input,
                     'email_notifications': False,
+
                 })
                 self.db.add_user_data(user_data, uid)
                 self.manager.current ='main';

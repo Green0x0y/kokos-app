@@ -29,7 +29,7 @@ class RegistrationScreen(Screen):
         error_label = self.ids["error_label"]
         error_label.text = ""
         if len(registration) != 7:
-            error_label.text = "Nieprawidłowa długość"
+            error_label.text = "Nieprawidłowa dłogość"
         userId, error = self.find_user_by_registration(registration)
         error_label.text = error
 

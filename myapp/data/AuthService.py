@@ -14,6 +14,8 @@ class AuthService:
         }
 
     def login(self, email: str, password: str):
+        email = "sebastian@gmail.com"
+        password = "Password!1"
         # does not check for permission denied error
         # email = "b@b.com"
         # password = "Password1!"

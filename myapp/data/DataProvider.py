@@ -17,8 +17,7 @@ class DataProvider:
         return self.db.child("users").child(uid)
     
     def get_username(self, uid):
-        return self.db.child("users").child(uid).get().val()['username']
-
+        return self.current_user_data['username']
 
     def get_current_user_data(self):
         return self.current_user_data
@@ -68,7 +67,7 @@ class DataProvider:
             self.db.child("users").child(receiver).child("conversations").update(conversations)
 
         self.db.child("conversations").child(conversationID).push({
-            'from' : sender,
+            'from' : self.get_username(sender),
             'to' : receiver,
             'datetime':   datetime.now().strftime('%d-%m-%Y %H:%M:%S'),
             'message': message
@@ -93,6 +92,7 @@ class DataProvider:
 
     def delete_message(self, msg_id, conversation):
         print("deleting msg", msg_id, conversation)
+        self.db.child("conversations").child(conversation).child(msg_id).remove()
 
     def email_notifications_on(self, receiver_id):
         self.db.child("users").child(receiver_id).update({'email_notifications': True})
@@ -109,8 +109,9 @@ class DataProvider:
         else:
             return receiver + ":" + sender
     
-    def get_other_uid(self, uid, conv_ID):
+    def get_other_uid(self, uid: str, conv_ID: str):
         other_id = conv_ID.replace(uid, "").replace(":", "")
-        if other_id == "":
+        # case if the message is sent by sender to himself
+        if len(other_id) < len(uid):
             other_id = uid
         return other_id

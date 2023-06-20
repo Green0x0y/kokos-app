@@ -44,7 +44,7 @@ Builder.load_file('screens/mainscreen.kv')
 Builder.load_file('screens/usercodescreen.kv')  
 Builder.load_file('screens/registrationscreen.kv')
 Builder.load_file('screens/signupscreen.kv')
-# Builder.load_file('screens/qrscreen.kv')
+Builder.load_file('screens/qrscreen.kv')
 Builder.load_file('screens/settingsscreen.kv')
 Builder.load_file('screens/adddamagescreen.kv')
 Builder.load_file('screens/yourqrcodescreen.kv')
@@ -72,7 +72,7 @@ class MyApp(App):
                    DeleteRegistrationScreen(auth_service, data_provider, name='deleteregistration'),
                    UpdateUsernameScreen(auth_service, data_provider, name='updateusername'),
                    ForgotPasswordScreen(auth_service, name='forgot_password')]
-        # Create the screen manager and add the login and main screens to it
+
         screen_manager = ScreenManager()
         for screen in screens:
             screen_manager.add_widget(screen)
