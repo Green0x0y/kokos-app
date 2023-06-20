@@ -1,35 +1,50 @@
 # KOKOS
-### Koleżeńska Ochrona Kierowców Oraz Samochodów
+ Koleżeńska Ochrona Kierowców Oraz Samochodów
+## Cel i Opis
+Aplikacja umożliwia użytkownikom łatwe i szybkie komunikowanie się z właścicielami samochodów w przypadku, gdy zauważą jakieś problemy związane z danym pojazdem. Użytkownicy mogą zeskanować kod QR umieszczony na szybie samochodu lub wprowadzić numer rejestracyjny, aby zidentyfikować właściciela i skontaktować się z nim za pośrednictwem aplikacji. Właścicielom umożliwia to szybką reakcję w przypadku potrzeby naprawy lub interwencji.
+## Funkcjonalności
+Możlwości aplikacji:
+- tworzenie konta, dodawanie własnych rejestracji,
+- identyfikacja właściciela pojazdu za pomocą kodu QR lub rejestracji,
+- możliwość nawiązania konwersacji z nadawcą wiadomości,
+- możliwość modyfikowania swojego konta,
+- możliwość otrzymywania powiadomień mailowych,
+  
+## Struktura projektu
+Projekt został podzielony na 3 foldery. 
 
-## Project Description
-This project is an ongoing mobile application.
-The app provides each user with a unique QR code that he can display in his car.
-If another user wants to contact him, for example to inform him that the 
-lights of his car are still on,
-he can scan the QR code and send a message directly to the car owner.
+<b>GUI</b> zawiera elementy interfejsu użytkownika dla czatu oraz uniwersalne dla aplikacji.
+
+<b>data</b> Zawiera między innymi klasy odpowiedzialne za komunikację z bazą danych. Klasa AuthService związana jest z autoryzacją użytkownika, a DataProvider umożliwia uzyskiwanie danych o użytkownikach.
+
+<b>screens</b> zawiera wszystkie widoki aplikacji wraz z ich warstwą graficzną. 
+Aplikacja zawiera następujące widoki (wraz z ich odpowiedzialnością):
+- adddamage - dodawanie nowej infrmacji dla właściciela pojazdu po zeskanowaniu kodu QR lub wpisaniu rejestracji
+- addregistration - dodawanie rejestracji pojazdu
+- chat - wyświetlanie konwersacji z innymi użytkownikami
+- deletregistration - usuwanie rejestracji
+- forgotpassword - resetowanie hasła
+- login - logowanie użytkownika
+- main - strona główna
+- qr - wyszukiwanie użytkownika po kodzie QR
+- registration - wyszukiwanie użytkownika po rejestracji
+- settings - ustawienia konta
+- signup - rejestracja użytkownika
+- updateusername - zmiana nazwy użytkownika
+- yourcode - wyświetlanie własnego kodu QR
 
 
-![image](https://github.com/Green0x0y/Kokos_App/assets/66325429/b0a12367-4871-4d26-b49a-6ca093200337)
-![image](https://github.com/Green0x0y/Kokos_App/assets/66325429/304bf213-7306-4cf7-8679-fe44c843bbb4)
+Dodatkowo poza folderami jest plik app.py który pozwala na uruchomienie aplikacji.
 
-## Technologies Used
-- Python 3.10
-- Kivy
-- Firebase
+## Technologie
+Python 3.10
 
-## Collaborators
-- Laura Wiktor
-- Sebastian Soczawa
+Kivy
 
-## dev setup
-- git clone https://github.com/Green0x0y/Kokos_App.git 
-- cd Kokos_App/myapp
-- python3.10 -m venv kokos-venv
-- source kokos-venv/bin/activate
-- pip install -r requirements.txt
-- python3 ./app.py
+Firebase
 
-In order to run the application python 3.10 is required.
-Installing mulitiple python versions can be done for example with **pyenv**
+## Twórcy
 
+Laura Wiktor
 
+Sebastian Soczawa
