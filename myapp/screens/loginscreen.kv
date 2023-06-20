@@ -29,6 +29,7 @@
             padding: (self.width * 0.1, 0, self.width * 0.1,self.height *0.1)
             spacing: self.height *0.05
 
+
             RoundedInput:
                 id: username_input
                 hint_text: 'Email'
@@ -37,24 +38,7 @@
                 id: password_input
                 hint_text: 'Hasło'
                 password: True
-                # font_size: self.height/3
-                # padding:(self.width * 0.1, self.height*0.3)
-                # password: True
 
-                # background_color: (0.4, 0.6, 1, 0)
-                # background_normal: ''
-                # background_active: ''
-                # border: (1, 1, 1, 1)
-                # border_radius: [40,]
-                # canvas.before:
-                #     Color:
-                #         rgba: (1, 1, 1, 1)
-                #     RoundedRectangle:
-                #         pos: self.pos
-                #         size: self.size
-                #         radius: [40,]
-                #     Color:
-                #         rgba: (0.5, 0.5, 0.5, 1)
             Button:
                 background_color: 0.4, 0.6, 1, 0
                 text: 'Zapomniałem hasła'

@@ -23,7 +23,6 @@ Builder.load_file('GUI/chat_utils/sendarea.kv')
 Builder.load_file('GUI/chat_utils/message.kv')
 
 
-
 class ChatScreen(Screen):
     def __init__(self, auth_service: AuthService, db: DataProvider, **kw):
         super().__init__(**kw)
@@ -73,7 +72,6 @@ class ChatWindow(TabbedPanelItem):
             self.db.add_message(message, self.auth.get_uid(), self.receiver, self.db.current_user_data['username'])
         self.send_input.text = ""
 
-
     def update_active_tab(self, header, state):
         if state == 'down':
             header.background_color = 106/255, 231/255, 75/255, 1
@@ -92,6 +90,7 @@ class ChatWindow(TabbedPanelItem):
         send_area = SendArea()
 
         self.send_input = send_area.ids.input
+
         send_button = send_area.ids.send
         send_button.bind(on_press=self.send_message)
 

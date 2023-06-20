@@ -24,14 +24,13 @@ class DataProvider:
     
     def set_current_user_data(self, uid):
         self.current_user_data = self.db.child("users").child(uid).get().val()
-        # print(self.current_user_data)
 
     def add_user_data(self, user_data, uid):
         self.current_user_data = user_data
         self.db.child("users").child(str(uid)).set(user_data)
 
     def update_username(self, uid, new_username):
-        self.db.child("users").child(uid).update({"username" : new_username})
+        self.db.child("users").child(uid).update({"username": new_username})
 
     def get_user_registrations(self, uid):
         return self.db.child("users").child(uid).child("registrations").get().val()
@@ -75,9 +74,6 @@ class DataProvider:
         })
     def get_conversations_IDs(self, user: str) -> dict:
         return self.db.child("users").child(user).child("conversations").get().val()
-    
-    def get_conversations_IDs_for_stream(self, user: str):
-        return self.db.child("users").child(user).child("conversations")
 
     def get_conversation(self, ID: str) -> dict:
         return self.db.child("conversations").child(ID).get()
@@ -97,6 +93,18 @@ class DataProvider:
     def delete_message(self, msg_id, conversation):
         print("deleting msg", msg_id, conversation)
         self.db.child("conversations").child(conversation).child(msg_id).remove()
+
+    def email_notifications_on(self, receiver_id):
+        self.db.child("users").child(receiver_id).update({'email_notifications': True})
+
+    def email_notifications_off(self, receiver_id):
+        self.db.child("users").child(receiver_id).update({'email_notifications': False})
+
+    def get_conversations_IDs_for_stream(self, user: str):
+        return self.db.child("users").child(user).child("conversations")
+
+    def get_email_notifications_setting(self, receiver_id):
+        return self.db.child("users").child(receiver_id).get().val()['email_notifications']
 
     def get_conversationID(self, sender, receiver):
         if sender > receiver:

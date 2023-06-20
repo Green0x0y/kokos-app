@@ -27,11 +27,13 @@
             id: mail_label
             font_size: self.height/5
             font_name: 'Roboto-Bold.ttf'
-            text: "Powiadomienia mailowe on"
+            text: "Powiadomienia mailowe off"
             color: 0.517, 0.41, 0.33, 1
             padding_x: self.width * 0.1
+            
          Switch:
-            active: True
+            active: False
+
             font_size: self.height/4
             font_name: 'Roboto-Bold.ttf'
             on_active: root.switch_click(self, self.active)

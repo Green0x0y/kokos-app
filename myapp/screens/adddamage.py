@@ -52,8 +52,9 @@ class AddDamageScreen(Screen):
         self.db.add_conversation(message, self.auth.user['localId'], self.receiver_id)
         self.ids.message.text = ''
         self.ids.result.text = 'Wiadomość wysłana!'
-        self.manager.transition.args = {"to" : self.receiver_id}
+        self.manager.transition.args = {"to": self.receiver_id}
         self.manager.current = 'chats'
         self.ids.result.text = ''
-        if self.db.get_user_data(self.receiver_id).get().val()['email'] != '':
+        if self.db.get_user_data(self.receiver_id).get().val()['email'] != '' \
+                and self.db.get_email_notifications_setting(self.receiver_id):
             self.send_email(message, self.receiver_id)

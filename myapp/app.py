@@ -72,6 +72,7 @@ class MyApp(App):
                    DeleteRegistrationScreen(auth_service, data_provider, name='deleteregistration'),
                    UpdateUsernameScreen(auth_service, data_provider, name='updateusername'),
                    ForgotPasswordScreen(auth_service, name='forgot_password')]
+
         screen_manager = ScreenManager()
         for screen in screens:
             screen_manager.add_widget(screen)

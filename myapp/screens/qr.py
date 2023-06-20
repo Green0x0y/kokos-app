@@ -8,7 +8,7 @@ class QRScreen(Screen):
         super().__init__(**kw)
         self.auth = auth_service
         self.db = db
-
+        
     def find_user_by_qr(self, qr_data):
         users = self.db.get_users().get()
         for user in users.each():
