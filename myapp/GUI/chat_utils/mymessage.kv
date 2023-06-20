@@ -3,8 +3,7 @@
 <MyMessage@BoxLayout>:
     orientation: 'vertical'
     spacing: 5
-    padding: (10, 10)
-    size_hint_y: None
+    size_hint: 0.7, None
     # message label
     Label:
         id: label
@@ -15,15 +14,11 @@
 #  msg_box
     StackLayout:
         orientation: 'rl-tb'
-        Label:
+        spacing: [5, 0]
+        padding: 5, 5
+        Message:
+            size_hint: 0.6, None
             id: content
-            background_color: (0, 1, 0, 1)
-            size_hint_x: None
-            font_size: 10
-            font_name: 'Roboto-Bold.ttf'
-            color: (0, 0, 0, 1)
-            bold: True
-            padding: 30, 10
             canvas.before:
                 Color: 
                     rgba: (0, 1, 0, 1)
@@ -31,11 +26,20 @@
                     pos: self.pos
                     size: self.size
                     radius: [20,]
-        Button:
-            text:"del"
-            width: 20
-            size_hint: (0.2, 1)
             
+        Button:
+            id: delete
+            size_hint: (None, .6)
+            width: self.height
+            padding: 5, 0
+            border: [0, 0, 0, 0]
+            vertical_align: 'center'
+            # background_color: [1,0,0,0.5]
+            background_normal:  'data/thrash.png'
+            background_disabled_normal: '/home/mr_nobody/studia/Semestr4/Python/Kokos_App/myapp/data/thrash.png'
+            background_disabled_active: '/home/mr_nobody/studia/Semestr4/Python/Kokos_App/myapp/data/thrash.png'
+            background_down: '/home/mr_nobody/studia/Semestr4/Python/Kokos_App/myapp/data/thrash.png'
+
 
 
 

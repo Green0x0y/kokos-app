@@ -20,15 +20,18 @@ Builder.load_file('GUI/chat_utils/othermessage.kv')
 Builder.load_file('GUI/chat_utils/mymessage.kv')
 Builder.load_file('GUI/chat_utils/chatbox.kv')
 Builder.load_file('GUI/chat_utils/sendarea.kv')
+Builder.load_file('GUI/chat_utils/message.kv')
 
 
 
 class ChatScreen(Screen):
-    def __init__(self, auth_service, db, **kw):
+    def __init__(self, auth_service: AuthService, db: DataProvider, **kw):
         super().__init__(**kw)
         self.auth = auth_service
         self.db = db
+        self.chatsPanel = self.ids.chats_panel
         self.initiated = False
+        self.first_tab = None
 
     def on_enter(self, *args):
         if self.initiated: return
@@ -36,17 +39,18 @@ class ChatScreen(Screen):
         self.initiated = True
 
     def init_chats(self):
-        IDs = self.db.get_conversations_IDs(self.auth.get_uid())
-        chatsPanel = self.ids.chats_panel
-        if IDs is not None and len(IDs) != 0:
-            first_tab = True
-            for conv_id in IDs:
-                chat = ChatWindow(self.db, self.auth, conv_id)
-                chatsPanel.add_widget(chat)
-                if first_tab:
-                    chat.on_press()
-                    chatsPanel.set_def_tab = chat
-                    first_tab = False
+        self.db.get_conversations_IDs_for_stream(self.auth.get_uid()).stream(self.new_chat_handler)
+        
+    def new_chat_handler(self, covnersation_IDs):
+        data = covnersation_IDs['data']
+        data = {} if data is None else data 
+        for conv_id in data:
+            if data[conv_id]:
+                Clock.schedule_once(partial(self.add_chat_callback, conv_id))
+
+    def add_chat_callback(self, conv_id, *args):
+        new_chat = ChatWindow(self.db, self.auth, conv_id)
+        self.chatsPanel.add_widget(new_chat)
 
 
 class ChatWindow(TabbedPanelItem):
@@ -62,12 +66,13 @@ class ChatWindow(TabbedPanelItem):
         self.text = self.username
         self.bind(state=self.update_active_tab)
         inspector.create_inspector(Window, self)
-
-
+    
     def send_message(self, instance):
         message = self.send_input.text
-        self.db.add_message(message, self.auth.get_uid(), self.receiver, self.db.current_user_data['username'])
+        if message != "":
+            self.db.add_message(message, self.auth.get_uid(), self.receiver, self.db.current_user_data['username'])
         self.send_input.text = ""
+
 
     def update_active_tab(self, header, state):
         if state == 'down':
@@ -86,6 +91,7 @@ class ChatWindow(TabbedPanelItem):
         chat_box = ChatBox(self, self.db, self.conversation)
         send_area = SendArea()
 
+        self.send_input = send_area.ids.input
         send_button = send_area.ids.send
         send_button.bind(on_press=self.send_message)
 
@@ -95,30 +101,41 @@ class ChatWindow(TabbedPanelItem):
 
 
 class ChatBox(ScrollView):
-    def __init__(self, parent, db, conv, **kwargs):
+    def __init__(self, parent, db, conv: str, **kwargs):
         super(ChatBox, self).__init__(**kwargs)
-        self.parent_xd = parent
+        self.user_id = parent.user
         self.db = db 
-        self.conversation = conv
+        self.conv = conv
+        self.messages = {}
 
         self.layout = self.ids.messages
         self.layout.bind(minimum_height=self.layout.setter('height'))
 
-        self.db.get_conversation_for_stream(self.conversation).stream(self.stream_handler)
+        self.db.get_conversation_for_stream(self.conv).stream(self.conversation_handler)
 
-    def stream_handler(self, message):
+    def conversation_handler(self, message):
+        # print(message)
+        messages = {} if message['data'] is None else message['data']
         if message['path'] == '/':
-            for msg in message['data'].values():
-                Clock.schedule_once(partial(self.add_msg_callback, msg), 0)
-        else:
-            Clock.schedule_once(partial(self.add_msg_callback, message['data']), 0)
+            for msg_id, msg in messages.items():
+                Clock.schedule_once(partial(self.add_msg_callback, msg, msg_id), 0)
+        elif messages: # special case, when there is only one message
+            msg_id = message['path'].replace("/", "")
+            Clock.schedule_once(partial(self.add_msg_callback, message['data'], msg_id), 0)
+        else: # case when the message is deleted
+            msg_id = message['path'].replace("/", "")
+            Clock.schedule_once(partial(self.remove_msg_callback, self.messages[msg_id]), 0)
+            
+    def remove_msg_callback(self, msg, *args):
+        self.layout.remove_widget(msg)
 
-    def add_msg_callback(self, msg, *args):
-        label = msg['from'] + " on " + msg['datetime'] + " wrote: "
-        if(msg['to'] != self.parent_xd.user):
-            new_message = MyMessage(self.parent_xd, label, msg['message'], msg['to'])
+    def add_msg_callback(self, msg, msg_id, *args):
+        label =  msg['datetime']+ ": " + msg['from'] + " napisał/a: "
+        if(msg['to'] != self.user_id):
+            new_message = MyMessage( label, msg['message'], self.db, msg_id, self.conv)
         else:
-            new_message = OtherMessage(self.parent_xd, label, msg['message'], msg['to'])
+            new_message = OtherMessage(label, msg['message'])
+        self.messages[msg_id] = new_message
         self.layout.add_widget(new_message)
 
 class SendArea(BoxLayout):
@@ -126,16 +143,21 @@ class SendArea(BoxLayout):
         super(SendArea, self).__init__(**kwargs)
 
 class MyMessage(BoxLayout):
-    def __init__(self, parent, text, msg, receiver, **kwargs):
+    def __init__(self, text, msg, db: DataProvider, msg_id, conv_id, **kwargs):
         super(MyMessage, self).__init__(**kwargs)
-        print(receiver, parent.user)
+        self.db = db
+        self.msg_id = msg_id
+        self.conv_id = conv_id
         self.ids.label.text = text
         self.ids.content.text = msg
+        self.ids.delete.bind(on_release=self.del_message)
+
+    def del_message(self, instance):
+        self.db.delete_message(self.msg_id, self.conv_id)
  
 class OtherMessage(BoxLayout):
-    def __init__(self, parent, text, msg, receiver, **kwargs):
+    def __init__(self, text, msg, **kwargs):
         super(OtherMessage, self).__init__(**kwargs)
-        print(receiver, parent.user)
         self.ids.label.text = text
         self.ids.content.text = msg
     
