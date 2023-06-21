@@ -1,9 +1,9 @@
 import base64
 import qrcode
-
 from data.DataProvider import DataProvider
 from kivy.uix.screenmanager import Screen
 from io import BytesIO
+
 
 class YourQrCodeScreen(Screen):
 
@@ -11,8 +11,9 @@ class YourQrCodeScreen(Screen):
         super().__init__(**kw)
         self.auth = auth_service
         self.db = db
+
     def on_enter(self, *args):
-        qr_data =  self.db.get_current_user_data()['qr_code'];
+        qr_data = self.db.get_current_user_data()['qr_code']
         qr = qrcode.QRCode(version=1, box_size=20, border=4)
         qr.add_data(qr_data)
         qr.make(fit=True)

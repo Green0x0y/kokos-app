@@ -1,6 +1,7 @@
 from kivy.uix.screenmanager import Screen
 from kivy.uix.togglebutton import ToggleButton
 
+
 class DeleteRegistrationScreen(Screen):
     def __init__(self, auth_service, db, **kw):
         super().__init__(**kw)
@@ -48,6 +49,7 @@ class DeleteRegistrationScreen(Screen):
     def refresh_page(self, dt):
         self.manager.current = 'settings'
         self.manager.current = 'deleteregistration'
+
     def on_leave(self, *args):
         layout = self.ids.options
         layout.clear_widgets()

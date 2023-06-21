@@ -22,14 +22,29 @@ he can scan the QR code and send a message directly to the car owner.
 - Sebastian Soczawa
 
 ## dev setup
-- git clone https://github.com/Green0x0y/Kokos_App.git 
-- cd Kokos_App/myapp
-- python3.10 -m venv kokos-venv
-- source kokos-venv/bin/activate
-- pip install -r requirements.txt
-- python3 ./app.py
+```
+git clone https://github.com/Green0x0y/Kokos_App.git 
+```
+``` 
+cd Kokos_App/myapp 
+```
+``` 
+python3.10 -m venv kokos-venv
+```
+```
+source kokos-venv/bin/activate
+```
+```
+pip install -r requirements.txt
+```
+```
+python3 ./app.py
+```
 
 In order to run the application python 3.10 is required.
-Installing mulitiple python versions can be done for example with **pyenv**
+Installing mulitiple python versions can be done for example with **pyenv**:
+```
+pyenv shell 3.10
+```
 
 

@@ -3,13 +3,14 @@ from kivy.uix.screenmanager import Screen
 import hashlib
 from collections import OrderedDict
 
+
 class SignUpScreen(Screen):
 
     def __init__(self, auth_service, data_provider, **kw):
         super().__init__(**kw)
         self.db = data_provider
         self.auth = auth_service
-    
+
     def switch_to_login_screen(self, instance):
         # Switch to the user code screen
         self.manager.current = 'login'
@@ -20,8 +21,7 @@ class SignUpScreen(Screen):
         email_input = self.ids.email_input.text
         password_input_2 = self.ids.password_input_2.text
         error_label = self.ids["error_label"]
-        
-        if username_input == "" or email_input == "" or password_input == "" or password_input_2 =="":
+        if username_input == "" or email_input == "" or password_input == "" or password_input_2 == "":
             error_label.text = "Uzupełnij wszystkie pola"
         else:
             success, text, uid = self.auth.signup(email_input, password_input, password_input_2)
@@ -43,4 +43,4 @@ class SignUpScreen(Screen):
 
                 })
                 self.db.add_user_data(user_data, uid)
-                self.manager.current ='main';
+                self.manager.current = 'main'

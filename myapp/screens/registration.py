@@ -8,19 +8,12 @@ class RegistrationScreen(Screen):
         self.db = db
 
     def find_user_by_registration(self, registration):
-        # ref = db.reference("users")
-        # users = ref.get()
-        # registration = self.ids.code_input.text
-        # if users is not None:
-        #     for username, user in users.items():
-        #         if registration in user.get("registrations", []):
-        #             return username
         users = self.db.get_users().get()
         for user in users.each():
             user_data = self.db.get_user_data(user.key()).child('registrations').get().val()
             print(user_data)
             if user_data is not None and registration in user_data:
-                 return user.key(), ""
+                return user.key(), ""
         else:
             return None, ""
 

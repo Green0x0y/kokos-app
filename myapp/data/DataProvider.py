@@ -4,6 +4,7 @@ from datetime import datetime
 import json
 import asyncio
 
+
 class DataProvider:
     def __init__(self, firebase: firebase, auth_service: AuthService) -> None:
         self.db = firebase.database()
@@ -15,13 +16,13 @@ class DataProvider:
 
     def get_user_data(self, uid):
         return self.db.child("users").child(uid)
-    
+
     def get_username(self, uid):
         return self.current_user_data['username']
 
     def get_current_user_data(self):
         return self.current_user_data
-    
+
     def set_current_user_data(self, uid):
         self.current_user_data = self.db.child("users").child(uid).get().val()
 
@@ -59,7 +60,7 @@ class DataProvider:
         conversations.update({conversationID: True})
 
         self.db.child("users").child(sender).child("conversations").update(conversations)
-        if(sender != receiver):
+        if (sender != receiver):
             conversations = self.db.child("users").child(receiver).child("conversations").get().val()
             if conversations is None:
                 conversations = {}
@@ -67,25 +68,26 @@ class DataProvider:
             self.db.child("users").child(receiver).child("conversations").update(conversations)
 
         self.db.child("conversations").child(conversationID).push({
-            'from' : self.get_username(sender),
-            'to' : receiver,
+            'from': self.get_username(sender),
+            'to': receiver,
             'datetime':   datetime.now().strftime('%d-%m-%Y %H:%M:%S'),
             'message': message
         })
+
     def get_conversations_IDs(self, user: str) -> dict:
         return self.db.child("users").child(user).child("conversations").get().val()
 
     def get_conversation(self, ID: str) -> dict:
         return self.db.child("conversations").child(ID).get()
-    
+
     def get_conversation_for_stream(self, ID: str):
         return self.db.child("conversations").child(ID)
-    
+
     def add_message(self, message, sender, receiver, sender_nick):
         conversationID = self.get_conversationID(sender, receiver)
         self.db.child("conversations").child(conversationID).push({
-            'from' : sender_nick,
-            'to' : receiver,
+            'from': sender_nick,
+            'to': receiver,
             'datetime':   datetime.now().strftime('%d-%m-%Y %H:%M:%S'),
             'message': message
         })
@@ -111,7 +113,7 @@ class DataProvider:
             return sender + ":" + receiver
         else:
             return receiver + ":" + sender
-    
+
     def get_other_uid(self, uid: str, conv_ID: str):
         other_id = conv_ID.replace(uid, "").replace(":", "")
         # case if the message is sent by sender to himself

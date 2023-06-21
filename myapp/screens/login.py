@@ -5,7 +5,6 @@ from kivy.modules import inspector
 from kivy.core.window import Window
 
 
-
 class LoginScreen(Screen):
 
     def __init__(self, auth_service: AuthService, db: DataProvider, **kw):

@@ -1,18 +1,21 @@
 from kivy.uix.screenmanager import Screen
 
+
 class AddRegistrationScreen(Screen):
     def __init__(self, auth_service, db, **kw):
         super().__init__(**kw)
         self.auth = auth_service
         self.db = db
+
     def on_enter(self):
         print("entered add registration")
+
     def check_registration_exists(self, new_registration):
         users = self.db.get_users().get()
         for user in users.each():
             user_registrations = self.db.get_user_registrations(user.key())
             # if there is the same registration
-            if user_registrations is not None and new_registration  in user_registrations:
+            if user_registrations is not None and new_registration in user_registrations:
                 return True, "Taka rejestracja już istnieje"
         else:
             return False, ""

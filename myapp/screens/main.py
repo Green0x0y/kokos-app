@@ -9,7 +9,7 @@ class MainScreen(Screen):
         super().__init__(**kw)
         self.auth = auth
         self.db = data_provider
-        
+
     def switch_to_user_code_screen(self, instance):
         # Switch to the user code screen
         self.manager.transition.direction = "left"
@@ -34,7 +34,7 @@ class MainScreen(Screen):
         # Switch to chats screen
         self.manager.transition.direction = "left"
         self.manager.current = 'chats'
-    
+
     def switch_to_my_qr_code(self, instance):
         self.manager.transition.direction = "left"
         self.manager.current = 'yourqrcode'

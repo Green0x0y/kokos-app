@@ -36,6 +36,8 @@ Aplikacja zawiera następujące widoki (wraz z ich odpowiedzialnością):
 
 Dodatkowo poza folderami jest plik app.py który pozwala na uruchomienie aplikacji.
 
+Kod został sprawdzony przy użyciu biblioteki pycodestyle czy jest zgodny z PEP 8. Pominęliśmy tylko błędy związane z długością lini
+
 ## Technologie
 Python 3.10
 

@@ -3,6 +3,7 @@ from kivy.uix.screenmanager import Screen
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+
 class AddDamageScreen(Screen):
     def __init__(self, auth, db,  **kw):
         super().__init__(**kw)

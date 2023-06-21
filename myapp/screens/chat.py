@@ -33,16 +33,17 @@ class ChatScreen(Screen):
         self.first_tab = None
 
     def on_enter(self, *args):
-        if self.initiated: return
+        if self.initiated:
+            return
         self.init_chats()
         self.initiated = True
 
     def init_chats(self):
         self.db.get_conversations_IDs_for_stream(self.auth.get_uid()).stream(self.new_chat_handler)
-        
+
     def new_chat_handler(self, covnersation_IDs):
         data = covnersation_IDs['data']
-        data = {} if data is None else data 
+        data = {} if data is None else data
         for conv_id in data:
             if data[conv_id]:
                 Clock.schedule_once(partial(self.add_chat_callback, conv_id))
@@ -65,7 +66,7 @@ class ChatWindow(TabbedPanelItem):
         self.text = self.username
         self.bind(state=self.update_active_tab)
         inspector.create_inspector(Window, self)
-    
+
     def send_message(self, instance):
         message = self.send_input.text
         if message != "":
@@ -83,7 +84,7 @@ class ChatWindow(TabbedPanelItem):
             return
         self.init_tab()
         self.created = True
-    
+
     def init_tab(self):
         layout = BoxLayout(orientation='vertical', size_hint=(1, 1))
         chat_box = ChatBox(self, self.db, self.conversation)
@@ -103,7 +104,7 @@ class ChatBox(ScrollView):
     def __init__(self, parent, db, conv: str, **kwargs):
         super(ChatBox, self).__init__(**kwargs)
         self.user_id = parent.user
-        self.db = db 
+        self.db = db
         self.conv = conv
         self.messages = {}
 
@@ -113,33 +114,34 @@ class ChatBox(ScrollView):
         self.db.get_conversation_for_stream(self.conv).stream(self.conversation_handler)
 
     def conversation_handler(self, message):
-        # print(message)
         messages = {} if message['data'] is None else message['data']
         if message['path'] == '/':
             for msg_id, msg in messages.items():
                 Clock.schedule_once(partial(self.add_msg_callback, msg, msg_id), 0)
-        elif messages: # special case, when there is only one message
+        elif messages:  # special case, when there is only one message
             msg_id = message['path'].replace("/", "")
             Clock.schedule_once(partial(self.add_msg_callback, message['data'], msg_id), 0)
-        else: # case when the message is deleted
+        else:  # case when the message is deleted
             msg_id = message['path'].replace("/", "")
             Clock.schedule_once(partial(self.remove_msg_callback, self.messages[msg_id]), 0)
-            
+
     def remove_msg_callback(self, msg, *args):
         self.layout.remove_widget(msg)
 
     def add_msg_callback(self, msg, msg_id, *args):
-        label =  msg['datetime']+ ": " + msg['from'] + " napisał/a: "
-        if(msg['to'] != self.user_id):
-            new_message = MyMessage( label, msg['message'], self.db, msg_id, self.conv)
+        label = msg['datetime'] + ": " + msg['from'] + " napisał/a: "
+        if (msg['to'] != self.user_id):
+            new_message = MyMessage(label, msg['message'], self.db, msg_id, self.conv)
         else:
             new_message = OtherMessage(label, msg['message'])
         self.messages[msg_id] = new_message
         self.layout.add_widget(new_message)
 
+
 class SendArea(BoxLayout):
     def __init__(self, **kwargs):
         super(SendArea, self).__init__(**kwargs)
+
 
 class MyMessage(BoxLayout):
     def __init__(self, text, msg, db: DataProvider, msg_id, conv_id, **kwargs):
@@ -153,10 +155,10 @@ class MyMessage(BoxLayout):
 
     def del_message(self, instance):
         self.db.delete_message(self.msg_id, self.conv_id)
- 
+
+
 class OtherMessage(BoxLayout):
     def __init__(self, text, msg, **kwargs):
         super(OtherMessage, self).__init__(**kwargs)
         self.ids.label.text = text
         self.ids.content.text = msg
-    
