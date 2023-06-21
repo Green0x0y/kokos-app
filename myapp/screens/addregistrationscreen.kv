@@ -6,18 +6,19 @@
             source: 'data/background_2.jpg'
             pos: self.pos
             size: self.size
+
     GridLayout:
         cols: 1
         rows:5
         Image:
             source: 'data/logo.png'
 
-
         Label:
             font_size: self.height/5.5
             text: 'Dodaj rejestrację'
             font_name: 'Roboto-Bold.ttf'
             color: 0.517, 0.41, 0.33, 1
+
         Label:
             id: error_label
             text: ""
@@ -25,6 +26,7 @@
             spacing: 0
             padding: 0, 0
             size_hint_y: 0.3
+
         Label:
             id: success_label
             text: ""
@@ -38,25 +40,9 @@
             orientation: 'vertical'
             padding: (self.width * 0.1, 0, self.width * 0.1, self.height*0.1)
             spacing: self.height*0.5
-            TextInput:
+    
+            RoundedInput:
                 id: code_input
-                padding:(self.width * 0.1, self.height*0.3)
-                font_size: self.height/3
-                size_hint_y: 0.8
-                background_color: (0.4, 0.6, 1, 0)
-                background_normal: ''
-                background_active: ''
-                border: (1, 1, 1, 1)
-                border_radius: [60,]
-                canvas.before:
-                    Color:
-                        rgba: (1, 1, 1, 1)
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [60,]
-                    Color:
-                        rgba: (0.5, 0.5, 0.5, 1)
 
             Button:
                 text: 'Dodaj'

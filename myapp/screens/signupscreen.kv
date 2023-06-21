@@ -4,13 +4,11 @@
         source: 'data/background.png'
         allow_stretch: True
         keep_ratio: False
+
     GridLayout:
 
         cols: 1
         rows:3
-        #row_force_default:  True
-        #row_default_height: (self.height - self.spacing[1]*(self.rows-1))/self.rows
-
 
         Image:
             source: 'data/logo.png'
@@ -29,93 +27,21 @@
             padding: (self.width * 0.1, 0, self.width * 0.1,self.height *0.1)
             spacing: self.height *0.07
 
-
-            TextInput:
+            RoundedInput:
                 id: username_input
                 hint_text: 'Nazwa użytkownika'
-                font_size: self.height/2.5
-                padding: (self.width * 0.1, self.height*0.3)
-                hint_text_color:0, 0, 0, 1
-                background_color: (0.4, 0.6, 1, 0)
-                background_normal: ''
-                background_active: ''
-                border: (1, 1, 1, 1)
-
-                canvas.before:
-                    Color:
-                        rgba: (1, 1, 1, 1)
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [40,]
-                    Color:
-                        rgba: (0.5, 0.5, 0.5, 1)
-            TextInput:
+            
+            RoundedInput:
                 id: email_input
                 hint_text: 'Email'
-                font_size: self.height/2.5
-                padding: (self.width * 0.1, self.height*0.3)
-                hint_text_color:0, 0, 0, 1
-                background_color: (0.4, 0.6, 1, 0)
-                background_normal: ''
-                background_active: ''
-                border: (1, 1, 1, 1)
 
-                canvas.before:
-                    Color:
-                        rgba: (1, 1, 1, 1)
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [40,]
-                    Color:
-                        rgba: (0.5, 0.5, 0.5, 1)
-
-            TextInput:
+            RoundedInput:
                 id: password_input
                 hint_text: 'Hasło'
-                font_size: self.height/2.5
-                padding: (self.width * 0.1, self.height*0.3)
-                password: True
 
-                background_color: (0.4, 0.6, 1, 0)
-                background_normal: ''
-                background_active: ''
-                border: (1, 1, 1, 1)
-                border_radius: [40,]
-                canvas.before:
-                    Color:
-                        rgba: (1, 1, 1, 1)
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [40,]
-                    Color:
-                        rgba: (0.5, 0.5, 0.5, 1)
-
-
-
-            TextInput:
+            RoundedInput:
                 id: password_input_2
                 hint_text: 'Powtórz hasło'
-                font_size: self.height/2.5
-                padding: (self.width * 0.1, self.height*0.3)
-                password: True
-
-                background_color: (0.4, 0.6, 1, 0)
-                background_normal: ''
-                background_active: ''
-                border: (1, 1, 1, 1)
-                border_radius: [40,]
-                canvas.before:
-                    Color:
-                        rgba: (1, 1, 1, 1)
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [40,]
-                    Color:
-                        rgba: (0.5, 0.5, 0.5, 1)
 
             Label:
                 id: error_label
